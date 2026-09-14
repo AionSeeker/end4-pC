@@ -6,7 +6,7 @@ import qs.modules.common.widgets
 
 RippleButton {
     id: root
-    property bool isMaterial: Config.options.bar.cornerStyle === 3
+    property bool isMaterial: Config.options.bar.cornerStyle === 3 || Config.options.bar.cornerStyle === 5
     property bool vertical: Config.options.bar.vertical
     property real buttonPadding: 5
 
