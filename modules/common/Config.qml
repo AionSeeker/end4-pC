@@ -216,6 +216,9 @@ Singleton {
                         property real scrollFactor: 0.7
                     }
                 }
+                property JsonObject misc: JsonObject {
+                    property bool focusOnActivate: false
+                }
             }
 
             property JsonObject apps: JsonObject {
