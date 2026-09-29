@@ -17,13 +17,13 @@ Item {
     height: parent.height
 
     readonly property real barPadding: 0
-    readonly property bool isMaterial: Config.options.bar.cornerStyle === 3 || Config.options.bar.cornerStyle === 5
-    readonly property bool isMaterialHug: Config.options.bar.cornerStyle === 5
+    readonly property bool isMaterial: Config.options.bar.cornerStyle === 3 || Config.options.bar.cornerStyle === 4
+    readonly property bool isMaterialHug: Config.options.bar.cornerStyle === 4
     readonly property color materialPillBgColor: (Config.options.bar.followFrameColor && Config.options.bar.frameColor)
         ? Appearance.getColorFromName(Config.options.bar.frameColor)
         : Appearance.colors.colLayer0
     readonly property bool trayHasItems: SystemTray.items.values.length > 0
-    readonly property bool isPanel: Config.options.bar.cornerStyle === 4
+    readonly property bool isPanel: Config.options.bar.cornerStyle === 5
 
     function filterLayout(layout) {
         if (trayHasItems) return layout
@@ -123,7 +123,7 @@ Item {
         Item {
             id: topItem
             anchors.top: parent.top
-            anchors.topMargin: root.isMaterialHug ? 0 : (root.isMaterial ? (Appearance.sizes.hyprlandGapsOut || 5) : (Config.options.bar.cornerStyle === 1 ? 4 : Config.options.bar.cornerStyle === 4 ? 4 : 10))
+            anchors.topMargin: root.isMaterialHug ? 0 : (root.isMaterial ? (Appearance.sizes.hyprlandGapsOut || 5) : (Config.options.bar.cornerStyle === 1 ? 4 : Config.options.bar.cornerStyle === 5 ? 4 : 10))
             anchors.left: parent.left
             anchors.right: parent.right
             height: root.isMaterial
@@ -346,7 +346,7 @@ Item {
         Item {
             id: bottomItem
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: root.isMaterialHug ? 0 : (root.isMaterial ? (Appearance.sizes.hyprlandGapsOut || 5) : (Config.options.bar.cornerStyle === 1 ? 4 : Config.options.bar.cornerStyle === 4 ? 4 : 10))
+            anchors.bottomMargin: root.isMaterialHug ? 0 : (root.isMaterial ? (Appearance.sizes.hyprlandGapsOut || 5) : (Config.options.bar.cornerStyle === 1 ? 4 : Config.options.bar.cornerStyle === 5 ? 4 : 10))
             anchors.left: parent.left
             anchors.right: parent.right
             height: root.isMaterial

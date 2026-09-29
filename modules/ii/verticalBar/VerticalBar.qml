@@ -201,7 +201,7 @@ Scope {
                         }
                         width: Appearance.rounding.screenRounding
                         active: (showBarBackground && Config.options.bar.cornerStyle === 0 && !barContent.centerOnly)
-                             || (Config.options.bar.cornerStyle === 5)
+                             || (Config.options.bar.cornerStyle === 4)
 
                         states: State {
                             name: "right"
@@ -220,7 +220,7 @@ Scope {
                         sourceComponent: Item {
                             implicitHeight: Appearance.rounding.screenRounding
 
-                            readonly property color decoratorColor: (Config.options.bar.cornerStyle === 5 || showBarBackground)
+                            readonly property color decoratorColor: (Config.options.bar.cornerStyle === 4 || showBarBackground)
                                 ? (Config.options.bar.followFrameColor && Config.options.bar.frameColor
                                     ? Appearance.getColorFromName(Config.options.bar.frameColor)
                                     : Appearance.colors.colLayer0)

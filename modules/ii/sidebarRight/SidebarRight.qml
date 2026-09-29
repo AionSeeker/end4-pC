@@ -83,7 +83,7 @@ Scope {
                 if (!centerOnly) return 0;
                 switch (Config.options.bar.cornerStyle) {
                 case 0:
-                case 5: return -root.barCenterOnlyOffset;
+                case 4: return -root.barCenterOnlyOffset;
                 case 1: return -root.barCenterOnlyOffset + Appearance.sizes.hyprlandGapsOut;
                 case 2: return -root.barCenterOnlyOffset + Appearance.sizes.hyprlandGapsOut;
                 case 3: return -root.barCenterOnlyOffset - Appearance.sizes.hyprlandGapsOut;
@@ -96,7 +96,7 @@ Scope {
                 if (!centerOnly) return 0;
                 switch (Config.options.bar.cornerStyle) {
                 case 0:
-                case 5: return -root.barCenterOnlyOffset;
+                case 4: return -root.barCenterOnlyOffset;
                 case 1: return -root.barCenterOnlyOffset + Appearance.sizes.hyprlandGapsOut;
                 case 2: return -root.barCenterOnlyOffset + Appearance.sizes.hyprlandGapsOut;
                 case 3: return -root.barCenterOnlyOffset - Appearance.sizes.hyprlandGapsOut;

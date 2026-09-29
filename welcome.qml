@@ -264,13 +264,13 @@ ApplicationWindow {
                                         value: 3
                                     },
                                     {
-                                        displayName: Translation.tr("Panel"),
-                                        icon: "toolbar",
+                                        displayName: Translation.tr("M3 Hug"),
+                                        icon: "category",
                                         value: 4
                                     },
                                     {
-                                        displayName: Translation.tr("M3 Hug"),
-                                        icon: "category",
+                                        displayName: Translation.tr("Panel"),
+                                        icon: "toolbar",
                                         value: 5
                                     }
                                 ]
