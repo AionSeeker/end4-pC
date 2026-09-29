@@ -1353,7 +1353,12 @@ ContentPage {
                             icon: "timer",
                             name: Translation.tr("Timers"),
                             enabled: Config.options.background.widgets.timers.enable
-                        }
+                        },
+                        {
+                            icon: "sticker",
+                            name: Translation.tr("Sticker"),
+                            enabled: Config.options.background.widgets.sticker.enable
+                        },
                         
                     ]
                     delegate: Rectangle {
@@ -1405,6 +1410,8 @@ ContentPage {
                                             Config.options.background.widgets.todo.enable = checked
                                         else if (modelData.icon === "timer")
                                             Config.options.background.widgets.timers.enable = checked
+                                        else if (modelData.icon === "sticker")
+                                            Config.options.background.widgets.sticker.enable = checked
                                     }
                                 }
                             }
