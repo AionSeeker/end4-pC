@@ -133,16 +133,6 @@ AbstractBackgroundWidget {
         animation: Appearance.animation.elementResize.numberAnimation.createObject(this)
     }
 
-    component AvatarImage: Image {
-        source: Config.options.profile.avatarPath !== ""
-            ? "file://" + Config.options.profile.avatarPicture
-            : "file:///home/" + (Quickshell.env("USER") ?? "user") + "/.face"
-        sourceSize.width: width * 2
-        sourceSize.height: height * 2
-        fillMode: Image.PreserveAspectCrop
-        onStatusChanged: if (status === Image.Error) visible = false
-    }
-
     Rectangle {
         id: card
         implicitWidth: root.widgetWidth
@@ -169,35 +159,10 @@ AbstractBackgroundWidget {
         // 1x1
         Component {
             id: oneByOneContent
-            Item {
-                id: avatarSingleWrap
+            UserAvatar {
                 anchors.fill: parent
-                layer.enabled: true
-                layer.effect: OpacityMask {
-                    maskSource: Rectangle {
-                        width: avatarSingleWrap.width
-                        height: avatarSingleWrap.height
-                        radius: Appearance.rounding?.verylarge ?? 30
-                    }
-                }
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: Appearance.colors.colLayer0
-                }
-
-                AvatarImage {
-                    id: avatarSingle
-                    anchors.fill: parent
-                }
-
-                MaterialSymbol {
-                    anchors.centerIn: parent
-                    text: "account_circle"
-                    iconSize: 32
-                    color: Appearance.colors.colOnPrimaryContainer
-                    visible: avatarSingle.status === Image.Error
-                }
+                radius: Appearance.rounding?.verylarge ?? 30
+                color: Appearance.colors.colLayer0
             }
         }
 
@@ -224,36 +189,11 @@ AbstractBackgroundWidget {
                     anchors { fill: parent; margins: 10 }
                     spacing: 12
 
-                    Item {
-                        id: avatarWideWrap
+                    UserAvatar {
                         Layout.preferredWidth: parent.height
-                        Layout.preferredHeight: parent.height 
-                        layer.enabled: true
-                        layer.effect: OpacityMask {
-                            maskSource: Rectangle {
-                                width: avatarWideWrap.width
-                                height: avatarWideWrap.height
-                                radius: (Appearance.rounding?.verylarge ?? 30) - 6
-                            }
-                        }
-
-                        Rectangle {
-                            anchors.fill: parent
-                            color: Appearance.colors.colLayer0
-                        }
-
-                        AvatarImage {
-                            id: avatarWide
-                            anchors.fill: parent
-                        }
-
-                        MaterialSymbol {
-                            anchors.centerIn: parent
-                            text: "account_circle"
-                            iconSize: 32
-                            color: Appearance.colors.colOnPrimaryContainer
-                            visible: avatarWide.status === Image.Error
-                        }
+                        Layout.preferredHeight: parent.height
+                        radius: (Appearance.rounding?.verylarge ?? 30) - 6
+                        color: Appearance.colors.colLayer0
                     }
 
                     ColumnLayout {
@@ -515,49 +455,15 @@ AbstractBackgroundWidget {
                     }
                 }
 
-                Rectangle {
+                UserAvatar {
                     id: avatarRect
                     x: root.blurMargin + 16
                     y: contentBox.y - root.avatarSize / 2
                     width: root.avatarSize + 10
                     height: root.avatarSize + 10
-                    radius: width / 2
-                    color: Appearance.colors.colPrimaryContainer
                     border.width: 3
                     border.color: Appearance.colors.colLayer1
                     z: 2
-
-                    Image {
-                        id: avatarImage
-                        anchors.fill: parent
-                        anchors.margins: 3
-                        source: Config.options.profile.avatarPath !== ""
-                            ? "file://" + Config.options.profile.avatarPicture
-                            : "file:///home/" + (Quickshell.env("USER") ?? "user") + "/.face"
-                        sourceSize.width: avatarImage.width * 2
-                        sourceSize.height: avatarImage.height * 2
-                        fillMode: Image.PreserveAspectCrop
-                        layer.enabled: true
-                        layer.effect: OpacityMask {
-                            maskSource: Rectangle {
-                                width: avatarRect.width - 6
-                                height: avatarRect.height - 6
-                                radius: (avatarRect.width - 6) / 2
-                            }
-                        }
-                        onStatusChanged: {
-                            if (status === Image.Error)
-                                visible = false
-                        }
-                    }
-
-                    MaterialSymbol {
-                        anchors.centerIn: parent
-                        text: "account_circle"
-                        iconSize: 32
-                        color: Appearance.colors.colOnPrimaryContainer
-                        visible: avatarImage.status === Image.Error
-                    }
                 }
 
                 ColumnLayout {
@@ -673,46 +579,15 @@ AbstractBackgroundWidget {
                     }
 
                     // Avatar overlapping
-                    Rectangle {
+                    UserAvatar {
                         id: avatarRect3
                         x: 16
                         y: heroWrap.height - 70
                         width: root.avatarSize + 10
                         height: root.avatarSize + 10
-                        radius: width / 2
-                        color: Appearance.colors.colPrimaryContainer
                         border.width: 3
                         border.color: Appearance.colors.colLayer1
                         z: 2
-
-                        Image {
-                            id: avatarImage3
-                            anchors.fill: parent
-                            anchors.margins: 3
-                            source: Config.options.profile.avatarPath !== ""
-                                ? "file://" + Config.options.profile.avatarPicture
-                                : "file:///home/" + (Quickshell.env("USER") ?? "user") + "/.face"
-                            sourceSize.width: avatarImage3.width * 2
-                            sourceSize.height: avatarImage3.height * 2
-                            fillMode: Image.PreserveAspectCrop
-                            layer.enabled: true
-                            layer.effect: OpacityMask {
-                                maskSource: Rectangle {
-                                    width: avatarRect3.width - 6
-                                    height: avatarRect3.height - 6
-                                    radius: (avatarRect3.width - 6) / 2
-                                }
-                            }
-                            onStatusChanged: if (status === Image.Error) visible = false
-                        }
-
-                        MaterialSymbol {
-                            anchors.centerIn: parent
-                            text: "account_circle"
-                            iconSize: 32
-                            color: Appearance.colors.colOnPrimaryContainer
-                            visible: avatarImage3.status === Image.Error
-                        }
                     }
 
                     // Labels + stats + lock/power

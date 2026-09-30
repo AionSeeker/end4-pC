@@ -33,6 +33,7 @@ Item {
     property var draggedItemData: null
 
     function startDrag(fromIdx, data, pos) {
+        grid.currentIndex = fromIdx;
         dragFromIndex = fromIdx;
         dropTargetIndex = fromIdx;
         draggedItemData = data;
@@ -126,6 +127,7 @@ Item {
         anchors.fill: parent
         visible: contextMenu.visible
         z: 105
+        hoverEnabled: true
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: contextMenu.visible = false
     }
@@ -378,6 +380,10 @@ Item {
             height: grid.cellHeight
 
             readonly property bool isGhost: root.isDragging && root.dragFromIndex === index
+
+            Component.onDestruction: {
+                if (root.isDragging && root.dragFromIndex === index) root.cancelDrag();
+            }
             readonly property bool isDropTarget: root.isDragging && root.dropTargetIndex === index && root.dragFromIndex !== index
 
             opacity: isGhost ? 0.3 : 1.0
