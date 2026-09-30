@@ -10,6 +10,11 @@ ContentPage {
     id: page
     forceWidth: true
 
+    readonly property color leftIconColor: {
+        const name = Config.options.custom.iconColor || "onLayer0"
+        return Appearance.colors[`col${name.charAt(0).toUpperCase()}${name.slice(1)}`] ?? Appearance.colors.colOnLayer0
+    }
+
     property var allWidgets: [
         { id: "leftSidebarButton", name: Translation.tr("Left Sidebar Button"),  icon: "left_panel_open" },
         { id: "workspaces",        name: Translation.tr("Workspaces"),           icon: "steppers" },
@@ -449,6 +454,76 @@ ContentPage {
                     buttonIcon: "colors"; text: Translation.tr("Tint icons")
                     checked: Config.options.tray.monochromeIcons
                     onCheckedChanged: { Config.options.tray.monochromeIcons = checked; }
+                }
+            }
+        }
+
+        ContentSection {
+            icon: "right_panel_open"
+            shape: MaterialShape.Shape.Pentagon
+            title: Translation.tr("Left sidebar button")
+
+            GroupedList {
+                ConfigRow {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 8
+                    Layout.rightMargin: 8
+                    spacing: 10
+
+                    CustomIcon {
+                        source: Config.options.custom.distroIcon || SystemInfo.distroIcon
+                        colorize: Config.options.custom.colorizeIcon
+                        color: page.leftIconColor
+                        customFolder: Config.options.custom.iconsPath
+                        width: Appearance.font.pixelSize.larger
+                        height: Appearance.font.pixelSize.larger
+                    }
+                    StyledText {
+                        Layout.fillWidth: true
+                        text: Translation.tr("Icon")
+                        color: Appearance.colors.colOnSecondaryContainer
+                    }
+                    StyledText {
+                        text: (Config.options.custom.distroIcon || SystemInfo.distroIcon).replace("-symbolic", "")
+                        color: Appearance.colors.colSubtext
+                    }
+                }
+                IconPickerGrid {
+                    customFolder: Config.options.custom.iconsPath
+                    currentValue: Config.options.custom.distroIcon
+                    colorize: Config.options.custom.colorizeIcon
+                    iconColor: page.leftIconColor
+                    onSelected: name => { Config.options.custom.distroIcon = name }
+                }
+                ConfigTextArea {
+                    id: iconsPathField
+                    Layout.fillWidth: true
+                    buttonIcon: "folder_open"
+                    text: Translation.tr("Custom icons folder")
+                    placeholderText: Translation.tr("Leave empty to use the built-in icons, e.g. ~/Pictures/icons")
+                    value: Config.options.custom.iconsPath
+                    onValueChanged: iconsPathDebounce.restart()
+
+                    Timer {
+                        id: iconsPathDebounce
+                        interval: 600
+                        onTriggered: Config.options.custom.iconsPath = iconsPathField.value
+                    }
+                }
+                ConfigSwitch {
+                    buttonIcon: "colors"
+                    text: Translation.tr("Colorize icon")
+                    checked: Config.options.custom.colorizeIcon
+                    onCheckedChanged: { Config.options.custom.colorizeIcon = checked }
+                }
+                ColorSelectionArray {
+                    enabled: Config.options.custom.colorizeIcon
+                    opacity: enabled ? 1 : 0.4
+                    icon: "palette"
+                    text: Translation.tr("Icon color")
+                    options: ["onLayer0", "primary", "secondary", "tertiary", "onPrimaryContainer", "onSecondaryContainer", "onTertiaryContainer"]
+                    currentValue: Config.options.custom.iconColor
+                    onSelected: newValue => { Config.options.custom.iconColor = newValue }
                 }
             }
         }
