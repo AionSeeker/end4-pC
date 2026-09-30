@@ -61,7 +61,7 @@ RippleButton {
         height: root.isMaterial ? (root.vertical ? 24 : 22) : 19.5
         source: Config.options.custom.distroIcon
         colorize: Config.options.custom.colorizeIcon
-        color: Appearance.colors.colPrimary
+        color: Appearance.colors.colOnLayer0
 
         Rectangle {
             opacity: root.showPing ? 1 : 0
