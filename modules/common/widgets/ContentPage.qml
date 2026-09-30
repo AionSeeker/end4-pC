@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Quickshell.Widgets
 import qs.modules.common
 
 /**
@@ -220,10 +221,10 @@ Item {
         if (!target) return
         if (typeof target.flashTitle === "function") return
         const pos = target.mapToItem(flickable.contentItem, 0, 0)
-        highlight.x = pos.x - 4
-        highlight.y = pos.y - 4
-        highlight.width = target.width + 8
-        highlight.height = target.height + 8
+        highlight.x = pos.x
+        highlight.y = pos.y
+        highlight.width = target.width
+        highlight.height = target.height
     }
 
     function _scrollToPending() {
@@ -263,22 +264,46 @@ Item {
         onTriggered: root._syncHighlight()
     }
 
-    Rectangle {
+    ClippingRectangle {
         id: highlight
         parent: flickable.contentItem
         z: 10
         radius: Appearance.rounding.small
-        color: "transparent"
-        border.width: 2
-        border.color: Appearance.colors.colPrimary
+        color: Qt.rgba(Appearance.colors.colPrimary.r, Appearance.colors.colPrimary.g, Appearance.colors.colPrimary.b, 0.12)
         opacity: 0
         visible: opacity > 0
 
-        SequentialAnimation {
+        property real sweep: 0
+
+        Rectangle {
+            width: highlight.width * 0.45
+            height: highlight.height
+            x: highlight.sweep * (highlight.width - width)
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: "transparent" }
+                GradientStop { position: 0.5; color: Qt.rgba(Appearance.colors.colPrimary.r, Appearance.colors.colPrimary.g, Appearance.colors.colPrimary.b, 0.4) }
+                GradientStop { position: 1.0; color: "transparent" }
+            }
+        }
+
+        ParallelAnimation {
             id: flash
-            NumberAnimation { target: highlight; property: "opacity"; to: 1; duration: 200 }
-            PauseAnimation { duration: 1400 }
-            NumberAnimation { target: highlight; property: "opacity"; to: 0; duration: 600 }
+
+            SequentialAnimation {
+                NumberAnimation { target: highlight; property: "opacity"; to: 1; duration: 150 }
+                PauseAnimation { duration: 1500 }
+                NumberAnimation { target: highlight; property: "opacity"; to: 0; duration: 500 }
+            }
+
+            SequentialAnimation {
+                PropertyAction { target: highlight; property: "sweep"; value: 0 }
+                SequentialAnimation {
+                    loops: 2
+                    NumberAnimation { target: highlight; property: "sweep"; to: 1; duration: 450; easing.type: Easing.InOutSine }
+                    NumberAnimation { target: highlight; property: "sweep"; to: 0; duration: 450; easing.type: Easing.InOutSine }
+                }
+            }
         }
     }
 
