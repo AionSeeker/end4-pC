@@ -169,21 +169,10 @@ AbstractBackgroundWidget {
         // 1x2
         Component {
             id: oneByTwoContent
-            Rectangle {
+            WidgetCard {
                 anchors.fill: parent
-                radius: Appearance.rounding?.verylarge ?? 30
-                color: Appearance.colors.colPrimaryContainer
-
-                FastBlurred {
-                    anchors.fill: parent
-                    blurSource: root.wallpaperItem
-                    cardRadius: card.radius
-                    tint: Appearance.colors.colLayer1
-                    tintOpacity: 0.55
-                    trackX: root.x  
-                    trackY: root.y
-                    visible: Config.options.background.widgets.blurWidgets 
-                }
+                widget: root
+                shadowed: false
 
                 RowLayout {
                     anchors { fill: parent; margins: 10 }
@@ -501,23 +490,12 @@ AbstractBackgroundWidget {
                 implicitWidth: root.snapWidth4
                 implicitHeight: root.snapHeight3
 
-                Rectangle {
+                WidgetCard {
                     id: cardBg
                     anchors.fill: parent
-                    radius: Appearance.rounding?.verylarge ?? 30
-                    color: Appearance.colors.colPrimaryContainer
+                    widget: root
+                    shadowed: false
                     clip: true
-
-                    FastBlurred {
-                        anchors.fill: parent
-                        blurSource: root.wallpaperItem
-                        cardRadius: cardBg.radius
-                        tint: Appearance.colors.colLayer1
-                        tintOpacity: 0.55
-                        trackX: root.x
-                        trackY: root.y
-                        visible: Config.options.background.widgets.blurWidgets
-                    }
 
                     Item {
                         id: heroWrap
