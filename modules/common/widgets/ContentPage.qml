@@ -218,13 +218,12 @@ Item {
     function _syncHighlight() {
         const target = root._pendingTarget
         if (!target) return
+        if (typeof target.flashTitle === "function") return
         const pos = target.mapToItem(flickable.contentItem, 0, 0)
-        const isSection = target.sectionId !== undefined
-        const margin = isSection ? 0 : 4
-        highlight.x = pos.x - margin
-        highlight.y = pos.y - margin
-        highlight.width = target.width + margin * 2
-        highlight.height = (isSection ? Math.min(target.height, 44) : target.height) + margin * 2
+        highlight.x = pos.x - 4
+        highlight.y = pos.y - 4
+        highlight.width = target.width + 8
+        highlight.height = target.height + 8
     }
 
     function _scrollToPending() {
@@ -250,7 +249,8 @@ Item {
                 root._goToPass = 1
                 interval = 450
                 restart()
-                flash.restart()
+                if (typeof root._pendingTarget.flashTitle === "function") root._pendingTarget.flashTitle()
+                else flash.restart()
             }
         }
     }
