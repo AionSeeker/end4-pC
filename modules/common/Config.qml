@@ -485,6 +485,7 @@ Singleton {
                 property string groupColor: "layer1"
                 property bool floatStyleShadow: true // Show shadow behind bar when cornerStyle == 1 (Float)
                 property string borderless: "pills"
+                property list<var> widgetStyles: []
                 property string topLeftIcon: "spark" // Options: "distro" or any icon name in ~/.config/quickshell/ii/assets/icons
                 property bool showBackground: true
                 property bool verbose: true
@@ -500,6 +501,11 @@ Singleton {
                     property int memoryWarningThreshold: 95
                     property int swapWarningThreshold: 85
                     property int cpuWarningThreshold: 90
+                }
+
+                property JsonObject aiUsage: JsonObject {
+                    property int tokenLimit: 1000000
+                    property int updateInterval: 60
                 }
 
                 property JsonObject dynamicIsland: JsonObject {
