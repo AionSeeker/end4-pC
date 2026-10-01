@@ -368,6 +368,74 @@ ContentPage {
         }
 
         ContentSection {
+            icon: "grid_view"
+            shape: MaterialShape.Shape.Square
+            title: Translation.tr("Multiple wallpapers")
+
+            GroupedList {
+                ConfigSwitch {
+                    buttonIcon: "dashboard"
+                    text: Translation.tr("Enable")
+                    checked: Config.options.background.collage.enable
+                    onCheckedChanged: {
+                        if (checked && !Config.options.background.collage.enable) Collage.reset()
+                        Config.options.background.collage.enable = checked
+                    }
+                }
+                ConfigSpinBox {
+                    icon: "space_bar"
+                    text: Translation.tr("Spacing")
+                    value: Config.options.background.collage.gap
+                    from: 0
+                    to: 80
+                    stepSize: 2
+                    onValueChanged: Config.options.background.collage.gap = value
+                }
+                ConfigSpinBox {
+                    icon: "crop_free"
+                    text: Translation.tr("Outer margin")
+                    value: Config.options.background.collage.margin
+                    from: 0
+                    to: 120
+                    stepSize: 2
+                    onValueChanged: Config.options.background.collage.margin = value
+                }
+                ConfigSpinBox {
+                    icon: "rounded_corner"
+                    text: Translation.tr("Corner radius")
+                    value: Config.options.background.collage.radius
+                    from: 0
+                    to: 80
+                    stepSize: 2
+                    onValueChanged: Config.options.background.collage.radius = value
+                }
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 8
+                    Layout.rightMargin: 8
+                    StyledText {
+                        Layout.fillWidth: true
+                        wrapMode: Text.Wrap
+                        color: Appearance.colors.colSubtext
+                        text: Translation.tr("Arrange the tiles from the desktop while widgets are unlocked: split, remove, change the image and drag the borders. The starred tile sets the colors and the blurred backdrop.")
+                    }
+                    RippleButton {
+                        implicitWidth: resetLabel.implicitWidth + 24
+                        implicitHeight: 36
+                        buttonRadius: Appearance.rounding.full
+                        onClicked: Collage.reset()
+                        contentItem: StyledText {
+                            id: resetLabel
+                            anchors.centerIn: parent
+                            text: Translation.tr("Reset layout")
+                            color: Appearance.colors.colOnLayer1
+                        }
+                    }
+                }
+            }
+        }
+
+        ContentSection {
             id: settingsClock
             icon: "clock_loader_40"
             shape: MaterialShape.Shape.Bun

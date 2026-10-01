@@ -243,6 +243,15 @@ Singleton {
             property JsonObject background: JsonObject {
                 property string lockWall: ""
                 property bool widgetsLocked: false
+                property JsonObject collage: JsonObject {
+                    property bool enable: false
+                    property int gap: 30
+                    property int margin: 30
+                    property int radius: 30
+                    property int primaryId: 1
+                    property int nextId: 2
+                    property string tree: "{\"t\":\"leaf\",\"id\":1,\"img\":\"\"}"
+                }
                 property bool showGrid: true
                 property bool showBlur: false
                 property real blurRadius: 32
