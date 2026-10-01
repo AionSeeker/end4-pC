@@ -14,6 +14,46 @@ ContentSubsection {
     property var availableWidgets: []
     property var onUpdate: (list) => {}
 
+    property bool liveReflow: false
+    property bool reflowAnimate: true
+    property int reflowTarget: -1
+    property var slotOffsets: []
+    property var draggedSlot: null
+
+    function computeReflow(draggedIndex, targetIndex) {
+        const count = itemRepeater.count
+        const order = []
+        for (let k = 0; k < count; k++) if (k !== draggedIndex) order.push(k)
+        order.splice(targetIndex, 0, draggedIndex)
+
+        const flowWidth = itemFlow.width
+        const gap = itemFlow.spacing
+        const slots = new Array(count)
+        let x = 0
+        let y = 0
+        let rowHeight = 0
+        for (const k of order) {
+            const chip = itemRepeater.itemAt(k)
+            if (!chip) continue
+            if (x > 0 && x + chip.width > flowWidth) {
+                x = 0
+                y += rowHeight + gap
+                rowHeight = 0
+            }
+            slots[k] = { x: x, y: y }
+            x += chip.width + gap
+            rowHeight = Math.max(rowHeight, chip.height)
+        }
+
+        const offsets = []
+        for (let k = 0; k < count; k++) {
+            const chip = itemRepeater.itemAt(k)
+            offsets.push(chip && slots[k] ? { x: slots[k].x - chip.x, y: slots[k].y - chip.y } : { x: 0, y: 0 })
+        }
+        root.slotOffsets = offsets
+        root.draggedSlot = slots[draggedIndex] ?? null
+    }
+
     title: sectionTitle
     Layout.fillWidth: true
     Layout.leftMargin: 8
@@ -48,10 +88,21 @@ ContentSubsection {
 
                         property real dragOffsetX: 0
                         property real dragOffsetY: 0
+                        property real displaceX: root.liveReflow && !dragHandler.active ? (root.slotOffsets[index]?.x ?? 0) : 0
+                        property real displaceY: root.liveReflow && !dragHandler.active ? (root.slotOffsets[index]?.y ?? 0) : 0
+
+                        Behavior on displaceX {
+                            enabled: root.reflowAnimate
+                            NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+                        }
+                        Behavior on displaceY {
+                            enabled: root.reflowAnimate
+                            NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+                        }
                         property bool settlePending: false
                         property point settleScenePos: Qt.point(0, 0)
 
-                        transform: Translate { x: chip.dragOffsetX; y: chip.dragOffsetY }
+                        transform: Translate { x: chip.dragOffsetX + chip.displaceX; y: chip.dragOffsetY + chip.displaceY }
                         z: (dragHandler.active || settleAnim.running) ? 100 : 0
 
                         ParallelAnimation {
@@ -107,7 +158,7 @@ ContentSubsection {
                                     if (i === index) continue
                                     const child = itemRepeater.itemAt(i)
                                     if (!child) continue
-                                    const childCenter = child.mapToItem(null, child.width / 2, child.height / 2)
+                                    const childCenter = itemFlow.mapToItem(null, child.x + child.width / 2, child.y + child.height / 2)
                                     const dx = dragX - childCenter.x
                                     const dy = dragY - childCenter.y
                                     const dist = Math.sqrt(dx * dx + dy * dy)
@@ -123,9 +174,16 @@ ContentSubsection {
                                 if (active) {
                                     settleAnim.stop()
                                     chip.settlePending = false
+                                    root.reflowTarget = index
+                                    root.slotOffsets = []
+                                    root.draggedSlot = null
+                                    root.liveReflow = true
                                     return
                                 }
 
+                                root.reflowAnimate = false
+                                root.liveReflow = false
+                                Qt.callLater(() => { root.reflowAnimate = true })
                                 dropIndicator.visible = false
                                 dropIndicator.targetIndex = -1
                                 const dragX = dragHandler.centroid.scenePosition.x
@@ -152,13 +210,16 @@ ContentSubsection {
                                 chip.dragOffsetY = centroid.scenePosition.y - centroid.scenePressPosition.y
 
                                 const newIndex = findNewIndex(centroid.scenePosition.x, centroid.scenePosition.y)
-                                const refChild = newIndex !== index ? itemRepeater.itemAt(newIndex) : null
-                                if (refChild) {
-                                    const refLocal = refChild.mapToItem(itemFlow, 0, 0)
+                                if (newIndex !== root.reflowTarget || !root.draggedSlot) {
+                                    root.reflowTarget = newIndex
+                                    root.computeReflow(index, newIndex)
+                                }
+                                const slot = root.draggedSlot
+                                if (slot) {
                                     dropIndicator.width = chip.width
                                     dropIndicator.height = chip.height
-                                    dropIndicator.x = newIndex < index ? refLocal.x : refLocal.x + refChild.width - chip.width
-                                    dropIndicator.y = refLocal.y
+                                    dropIndicator.x = slot.x
+                                    dropIndicator.y = slot.y
                                     dropIndicator.visible = true
                                     dropIndicator.targetIndex = newIndex
                                 } else {
