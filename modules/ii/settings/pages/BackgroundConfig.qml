@@ -556,10 +556,9 @@ ContentPage {
                 visible: settingsClock.digitalPresent
                 title: Translation.tr("Digital clock settings")
 
-                ConfigRow {
-                    uniform: true
-
-                    GroupedList {
+                GroupedList {
+                    ConfigRow {
+                        uniform: true
                         ConfigSwitch {
                             buttonIcon: "vertical_distribute"
                             text: Translation.tr("Vertical")
@@ -567,19 +566,19 @@ ContentPage {
                             onCheckedChanged: { Config.options.background.widgets.clock.digital.vertical = checked }
                         }
                         ConfigSwitch {
-                            buttonIcon: "date_range"
-                            text: Translation.tr("Show date")
-                            checked: Config.options.background.widgets.clock.digital.showDate
-                            onCheckedChanged: { Config.options.background.widgets.clock.digital.showDate = checked }
-                        }
-                    }
-
-                    GroupedList {
-                        ConfigSwitch {
                             buttonIcon: "animation"
                             text: Translation.tr("Animate time change")
                             checked: Config.options.background.widgets.clock.digital.animateChange
                             onCheckedChanged: { Config.options.background.widgets.clock.digital.animateChange = checked }
+                        }
+                    }
+                    ConfigRow {
+                        uniform: true
+                        ConfigSwitch {
+                            buttonIcon: "date_range"
+                            text: Translation.tr("Show date")
+                            checked: Config.options.background.widgets.clock.digital.showDate
+                            onCheckedChanged: { Config.options.background.widgets.clock.digital.showDate = checked }
                         }
                         ConfigSwitch {
                             buttonIcon: "activity_zone"
@@ -614,27 +613,22 @@ ContentPage {
                     }
                 }
 
-                MaterialTextArea {
-                    Layout.fillWidth: true
-                    placeholderText: Translation.tr("Font family")
-                    text: Config.options.background.widgets.clock.digital.font.family
-                    wrapMode: TextEdit.Wrap
+                GroupedList {
+                    ConfigTextArea {
+                        id: clockFontFamilyField
+                        Layout.fillWidth: true
+                        buttonIcon: "font_download"
+                        text: Translation.tr("Font family")
+                        placeholderText: Translation.tr("e.g., Google Sans Flex")
+                        value: Config.options.background.widgets.clock.digital.font.family
+                        onValueChanged: clockFontDebounce.restart()
 
-                    Timer {
-                        id: debounceTimer
-                        interval: 500
-                        repeat: false
-                        onTriggered: {
-                            Config.options.background.widgets.clock.digital.font.family = parent.text
+                        Timer {
+                            id: clockFontDebounce
+                            interval: 500
+                            onTriggered: Config.options.background.widgets.clock.digital.font.family = clockFontFamilyField.value
                         }
                     }
-
-                    onTextChanged: {
-                        debounceTimer.restart()
-                    }
-                }
-                GroupedList {
-                    Layout.topMargin: 10
                     ConfigSlider {
                         text: Translation.tr("Font weight")
                         value: Config.options.background.widgets.clock.digital.font.weight
