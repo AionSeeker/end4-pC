@@ -334,6 +334,7 @@ Singleton {
                         property real y: 100
                         property real z: 0
                         property string sizeMode: "2x2"
+                        property bool vertical: false
                         property int clockCount: 4 
                     }
 
