@@ -9,6 +9,8 @@ import qs.modules.common.widgets.widgetCanvas
 import qs.modules.ii.background.widgets
 
 AbstractBackgroundWidget {
+    Component.onCompleted: ResourceUsage.consumers++
+    Component.onDestruction: ResourceUsage.consumers--
     id: root
     configEntryName: "resources"
     hoverEnabled: true
