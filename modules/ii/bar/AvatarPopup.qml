@@ -24,7 +24,7 @@ PopupWindow {
     readonly property real innerRadius: cardRadius - cardPadding
     readonly property real gridPadding: 6
     readonly property real cell: (cardWidth - cardPadding * 2 - gridPadding * 2) / columns
-    readonly property real gridMaxHeight: cell * 4
+    readonly property real gridMaxHeight: cell * 3
     readonly property bool hasFolder: Config.options.profile.avatarPath !== ""
     readonly property string displayName: Config.options.profile.displayName !== "" ? Config.options.profile.displayName : SystemInfo.username
     readonly property string description: Config.options.profile.descriptionText === "::distro::" ? SystemInfo.distroName : Config.options.profile.descriptionText
