@@ -552,6 +552,7 @@ Singleton {
                     property int shown: 10
                     property bool showAppIcons: false
                     property string indicatorStyle: "dot" // "dot" or "icon"
+                    property string style: "default" // "default", "gnome", "dots", "ticks"
                     property bool alwaysShowNumbers: true
                     property int showNumberDelay: 300 // milliseconds
                     property list<string> numberMap: ["1", "2"] // Characters to show instead of numbers on workspace indicator
