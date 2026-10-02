@@ -392,6 +392,20 @@ Item {
             }
         }
 
+        Rectangle {
+            parent: grid.contentItem
+            z: -1
+            visible: grid.introDone && grid.count > 0 && grid.currentIndex >= 0 && grid.currentIndex < grid.count
+            x: (grid.currentIndex % grid.columns) * grid.cellWidth + Appearance.sizes.wallpaperSelectorItemMargins
+            y: Math.floor(grid.currentIndex / grid.columns) * grid.cellHeight + Appearance.sizes.wallpaperSelectorItemMargins
+            width: grid.cellWidth - 2 * Appearance.sizes.wallpaperSelectorItemMargins
+            height: grid.cellHeight - 2 * Appearance.sizes.wallpaperSelectorItemMargins
+            radius: Appearance.rounding.normal
+            color: Appearance.colors.colPrimary
+            Behavior on x { NumberAnimation { duration: 110; easing.type: Easing.OutCubic } }
+            Behavior on y { NumberAnimation { duration: 110; easing.type: Easing.OutCubic } }
+        }
+
         delegate: Item {
             id: delegateCell
             required property var modelData
@@ -428,7 +442,7 @@ Item {
                 }
                 fileModelData: delegateCell.modelData
                 colBackground: (delegateCell.index === grid.currentIndex || cellMouseArea.containsMouse)
-                    ? Appearance.colors.colPrimary
+                    ? (grid.introDone ? ColorUtils.transparentize(Appearance.colors.colPrimary, 1) : Appearance.colors.colPrimary)
                     : (delegateCell.modelData.filePath === Config.options.background.wallpaperPath)
                         ? Appearance.colors.colSecondaryContainer
                         : ColorUtils.transparentize(Appearance.colors.colPrimaryContainer)
