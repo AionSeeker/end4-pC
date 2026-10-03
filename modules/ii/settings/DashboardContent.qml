@@ -100,8 +100,8 @@ Item {
             wallpapersLoader.item?.moveSelection(dx, dy);
         } else if (currentPage === wallpapersPage && (event.key === Qt.Key_Return || event.key === Qt.Key_Enter || event.key === Qt.Key_Space)) {
             wallpapersLoader.item?.activate();
-        } else if (currentPage === wallpapersPage && event.key === Qt.Key_L) {
-            wallpapersLoader.item?.activateLock();
+        } else if (currentPage === wallpapersPage && event.key === Qt.Key_L && wallpapersLoader.item && !wallpapersLoader.item.synced) {
+            wallpapersLoader.item.activateLock();
         } else if (currentPage === settingsPage && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)) {
             settingsLoader.item?.scrollBy(event.key === Qt.Key_Down ? 120 : -120);
         } else if (currentPage === settingsPage && (event.key === Qt.Key_PageUp || event.key === Qt.Key_PageDown)) {
@@ -120,6 +120,8 @@ Item {
             goToPage((pendingPage + 1) % pageNames.length);
         } else if (event.key === Qt.Key_Backtab) {
             goToPage((pendingPage - 1 + pageNames.length) % pageNames.length);
+        } else if (isSearchablePage && typedCharacter(event)) {
+            typeIntoSearch(event.text);
         } else {
             return;
         }
@@ -184,6 +186,21 @@ Item {
 
     function scrollSettingsBy(delta) {
         settingsLoader.item?.scrollBy(delta);
+    }
+
+    readonly property bool isSearchablePage: currentPage === settingsPage || currentPage === wallpapersPage || currentPage === presetsPage
+
+    function typedCharacter(event) {
+        if (event.modifiers & (Qt.ControlModifier | Qt.AltModifier | Qt.MetaModifier)) return false;
+        return event.text.length === 1 && event.text.charCodeAt(0) >= 32 && event.text.charCodeAt(0) !== 127;
+    }
+
+    function typeIntoSearch(character) {
+        const previous = searchOpen ? searchInput.text : "";
+        searchOpen = true;
+        searchInput.text = previous + character;
+        searchInput.cursorPosition = searchInput.text.length;
+        Qt.callLater(() => searchInput.forceActiveFocus());
     }
 
     function openSearch() {
