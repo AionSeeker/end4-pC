@@ -18,6 +18,10 @@ Scope {
             title: "illogical-impulse Settings"
             color: Appearance.colors.colLayer0
 
+            implicitWidth: 1100
+            implicitHeight: 680
+            minimumSize: Qt.size(900, 600)
+
             property bool settled: false
 
             visible: true
