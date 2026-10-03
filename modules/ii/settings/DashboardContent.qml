@@ -29,6 +29,25 @@ Item {
     readonly property int mediaPage: 3
     readonly property bool mediaVisible: currentPage === mediaPage && mediaState.displayedArtFilePath !== ""
     readonly property var mediaColors: mediaVisible ? mediaState.blendedColors : Appearance.colors
+
+    QtObject {
+        id: ui
+
+        readonly property var blended: mediaState.blendedColors
+        readonly property bool media: root.mediaVisible && root.pendingPage === root.mediaPage
+
+        readonly property color surface: media ? blended.colLayer1 : Appearance.colors.colLayer1
+        readonly property color toolbar: media ? blended.colLayer1 : Appearance.m3colors.m3surfaceContainer
+        readonly property color fgSurface: media ? blended.colOnLayer1 : Appearance.colors.colOnLayer1
+        readonly property color subtext: media ? blended.colSubtext : Appearance.colors.colSubtext
+        readonly property color hover: media ? blended.colSecondaryContainerHover : Appearance.colors.colLayer1Hover
+        readonly property color accent: media ? blended.colPrimary : Appearance.colors.colPrimary
+        readonly property color accentHover: media ? blended.colPrimaryHover : Appearance.colors.colPrimaryHover
+        readonly property color accentActive: media ? blended.colPrimaryActive : Appearance.colors.colPrimaryActive
+        readonly property color fgAccent: media ? blended.colOnPrimary : Appearance.colors.colOnPrimary
+        readonly property color container: media ? blended.colSecondaryContainer : Appearance.colors.colPrimaryContainer
+        readonly property color fgContainer: media ? blended.colOnSecondaryContainer : Appearance.colors.colOnPrimaryContainer
+    }
     focus: true
 
     DashboardMediaState {
@@ -256,8 +275,8 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "black"
-        opacity: root.mediaVisible ? 0.5 : 0
+        color: mediaState.blendedColors.colLayer0
+        opacity: root.mediaVisible ? 0.6 : 0
         Behavior on opacity { NumberAnimation { duration: 300; easing.type: Easing.OutCubic } }
     }
 
@@ -274,9 +293,9 @@ Item {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 radius: height / 2
-                color: Appearance.colors.colLayer1
+                color: ui.surface
                 border.width: 2
-                border.color: Appearance.colors.colPrimary
+                border.color: ui.accent
                 implicitHeight: 44
                 implicitWidth: distroPillRow.implicitWidth + 28
 
@@ -294,13 +313,14 @@ Item {
                         text: SystemInfo.distroName
                         font.pixelSize: Appearance.font.pixelSize.normal
                         font.weight: Font.Medium
-                        color: Appearance.colors.colOnLayer1
+                        color: ui.fgSurface
                     }
                 }
             }
 
             Toolbar {
                 anchors.centerIn: parent
+                colBackground: ui.toolbar
 
                 Repeater {
                     model: root.pageNames
@@ -315,9 +335,10 @@ Item {
                         buttonRadius: height / 2
                         toggled: root.pendingPage === index
                         onClicked: root.goToPage(index)
-                        colBackgroundToggled: Appearance.colors.colPrimary
-                        colBackgroundToggledHover: Appearance.colors.colPrimaryHover
-                        colRippleToggled: Appearance.colors.colPrimaryActive
+                        colBackgroundToggled: ui.accent
+                        colBackgroundToggledHover: ui.accentHover
+                        colRippleToggled: ui.accentActive
+                        colBackgroundHover: ui.hover
 
                         contentItem: RowLayout {
                             id: navContentRow
@@ -327,13 +348,13 @@ Item {
                             MaterialSymbol {
                                 text: navBtn.modelData.icon
                                 iconSize: Appearance.font.pixelSize.larger
-                                color: navBtn.toggled ? Appearance.colors.colOnPrimary : Appearance.colors.colOnLayer1
+                                color: navBtn.toggled ? ui.fgAccent : ui.fgSurface
                                 fill: navBtn.toggled ? 1 : 0
                             }
 
                             StyledText {
                                 text: navBtn.modelData.name
-                                color: navBtn.toggled ? Appearance.colors.colOnPrimary : Appearance.colors.colOnLayer1
+                                color: navBtn.toggled ? ui.fgAccent : ui.fgSurface
                                 visible: navBtn.toggled
                             }
                         }
@@ -351,9 +372,9 @@ Item {
                     implicitHeight: 44
                     implicitWidth: root.searchOpen ? 280 : 44
                     radius: height / 2
-                    color: Appearance.colors.colLayer1
+                    color: ui.surface
                     border.width: searchInput.activeFocus ? 2 : 0
-                    border.color: Appearance.colors.colPrimary
+                    border.color: ui.accent
                     clip: true
 
                     Behavior on implicitWidth {
@@ -374,7 +395,7 @@ Item {
                                 anchors.centerIn: parent
                                 text: "search"
                                 iconSize: Appearance.font.pixelSize.larger
-                                color: Appearance.colors.colOnLayer1
+                                color: ui.fgSurface
                             }
                         }
                     }
@@ -389,8 +410,8 @@ Item {
                         clip: true
                         font.pixelSize: Appearance.font.pixelSize.normal
                         font.family: Appearance.font.family.main
-                        color: Appearance.colors.colOnLayer1
-                        selectionColor: Appearance.colors.colPrimary
+                        color: ui.fgSurface
+                        selectionColor: ui.accent
                         onTextChanged: root.searchQuery = text
                         Keys.onEscapePressed: {
                             if (text !== "") text = "";
@@ -408,7 +429,7 @@ Item {
                             visible: searchInput.text === ""
                             text: root.pendingPage === root.presetsPage ? Translation.tr("Search presets") : root.pendingPage === root.wallpapersPage ? Translation.tr("Search wallpapers") : Translation.tr("Search settings")
                             font.pixelSize: Appearance.font.pixelSize.normal
-                            color: Appearance.colors.colSubtext
+                            color: ui.subtext
                         }
                     }
                 }
@@ -422,7 +443,8 @@ Item {
                         implicitWidth: 44
                         implicitHeight: 44
                         buttonRadius: height / 2
-                        colBackground: Appearance.colors.colLayer1
+                        colBackground: ui.surface
+                        colBackgroundHover: ui.hover
                         onClicked: {
                             if (modelData === "notifications")
                                 GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
@@ -432,7 +454,7 @@ Item {
                                 anchors.centerIn: parent
                                 text: modelData
                                 iconSize: Appearance.font.pixelSize.larger
-                                color: Appearance.colors.colOnLayer1
+                                color: ui.fgSurface
                             }
 
                             Rectangle {
@@ -464,7 +486,7 @@ Item {
                     width: 44
                     height: 44
                     radius: width / 2
-                    color: Appearance.colors.colPrimaryContainer
+                    color: ui.container
 
                     Image {
                         id: avatarImage
@@ -489,7 +511,7 @@ Item {
                         anchors.centerIn: parent
                         text: "account_circle"
                         iconSize: 30
-                        color: Appearance.colors.colOnPrimaryContainer
+                        color: ui.fgContainer
                         visible: avatarImage.status !== Image.Ready
                     }
                 }

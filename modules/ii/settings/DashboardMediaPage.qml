@@ -1,7 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
+import Quickshell.Io
 import qs.modules.common
+import qs.modules.common.functions
 import qs.modules.common.widgets
 
 Item {
@@ -23,10 +25,22 @@ Item {
         const length = player.length > 0 ? player.length : Number.MAX_VALUE;
         player.position = Math.max(0, Math.min(length, player.position + seconds));
     }
-    readonly property color fg: "white"
-    readonly property color fgDim: Qt.rgba(1, 1, 1, 0.65)
-    readonly property color hoverColor: Qt.rgba(1, 1, 1, 0.12)
-    readonly property color activeColor: Qt.rgba(1, 1, 1, 0.25)
+    property list<real> visualizerPoints: []
+
+    Process {
+        id: cavaProc
+        running: root.visible && root.media.playing
+        command: ["cava", "-p", `${FileUtils.trimFileProtocol(Directories.scriptPath)}/cava/raw_output_config.txt`]
+        onRunningChanged: if (!running) root.visualizerPoints = []
+        stdout: SplitParser {
+            onRead: data => root.visualizerPoints = data.split(";").map(p => parseFloat(p.trim())).filter(p => !isNaN(p))
+        }
+    }
+
+    readonly property color fg: colors.colOnLayer0
+    readonly property color fgDim: colors.colSubtext
+    readonly property color hoverColor: colors.colSecondaryContainerHover
+    readonly property color activeColor: colors.colSecondaryContainerActive
 
     property string shownTitle: ""
     property string shownArtist: ""
@@ -76,6 +90,19 @@ Item {
         const m = Math.floor(total / 60);
         const s = total % 60;
         return m + ":" + (s < 10 ? "0" : "") + s;
+    }
+
+    WaveVisualizer {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: -16
+        anchors.rightMargin: -16
+        anchors.bottomMargin: -16
+        height: parent.height * 0.4
+        live: root.media.playing
+        points: root.visualizerPoints
+        color: root.colors.colPrimary
     }
 
     RowLayout {
@@ -185,6 +212,12 @@ Item {
                 travelX: -200
                 travelY: 260
 
+                Rectangle {
+                    anchors.fill: parent
+                    radius: parent.cardRadius
+                    color: Qt.rgba(0, 0, 0, 0.28)
+                }
+
                 ColumnLayout {
                     id: controlsLayout
                     anchors.fill: parent
@@ -205,9 +238,9 @@ Item {
                             Layout.fillWidth: true
                             configuration: StyledSlider.Configuration.Wavy
                             enabled: root.player?.canSeek ?? false
-                            highlightColor: root.fg
-                            trackColor: root.fgDim
-                            handleColor: root.fg
+                            highlightColor: root.colors.colPrimary
+                            trackColor: root.colors.colSecondaryContainer
+                            handleColor: root.colors.colPrimary
                             value: (root.player?.position ?? 0) / Math.max(1, root.player?.length ?? 1)
                             onMoved: root.player.position = value * root.player.length
                         }
@@ -273,9 +306,9 @@ Item {
                             implicitWidth: 64
                             implicitHeight: 64
                             buttonRadius: root.media.playing ? Appearance.rounding.large : 32
-                            colBackground: root.fg
-                            colBackgroundHover: Qt.lighter(root.fg, 1.1)
-                            colRipple: root.fgDim
+                            colBackground: root.colors.colPrimary
+                            colBackgroundHover: root.colors.colPrimaryHover
+                            colRipple: root.colors.colPrimaryActive
                             downAction: () => root.player?.togglePlaying()
                             contentItem: Item {
                                 MaterialSymbol {
@@ -283,7 +316,7 @@ Item {
                                     text: root.media.playing ? "pause" : "play_arrow"
                                     iconSize: 32
                                     fill: 1
-                                    color: "black"
+                                    color: root.colors.colOnPrimary
                                 }
                             }
                         }
@@ -356,7 +389,7 @@ Item {
                 lineSpacing: 28
                 textAlignment: Text.AlignHCenter
                 textColor: root.fg
-                activeColor: root.fg
+                activeColor: root.colors.colPrimary
                 dimColor: root.fgDim
                 indicatorColor: root.colors.colSecondaryContainer
                 indicatorShapeColor: root.colors.colOnSecondaryContainer

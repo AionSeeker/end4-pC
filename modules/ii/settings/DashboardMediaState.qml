@@ -31,6 +31,10 @@ Item {
             root.downloaded = false;
             return;
         }
+        if (downloader.running) {
+            downloader.rerun = true;
+            return;
+        }
         downloader.targetFile = root.artUrl;
         downloader.filePath = root.artFilePath;
         root.downloaded = false;
@@ -51,8 +55,16 @@ Item {
         id: downloader
         property string targetFile: ""
         property string filePath: ""
-        command: ["bash", "-c", `[ -f '${filePath}' ] || curl -sSL '${targetFile}' -o '${filePath}'`]
-        onExited: root.downloaded = true
+        property bool rerun: false
+        command: ["bash", "-c", `[ -s '${filePath}' ] || { curl -sSLf -m 20 '${targetFile}' -o '${filePath}.part' && mv -f '${filePath}.part' '${filePath}'; rm -f '${filePath}.part'; }; [ -s '${filePath}' ]`]
+        onExited: (code, status) => {
+            if (rerun || filePath !== root.artFilePath) {
+                rerun = false;
+                root.refreshArt();
+                return;
+            }
+            root.downloaded = code === 0;
+        }
     }
 
     ColorQuantizer {
