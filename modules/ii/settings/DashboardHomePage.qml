@@ -969,7 +969,7 @@ Item {
                             }
 
                             StyledText {
-                                text: DateTime.time
+                                text: DateTime.use12HourFormat ? DateTime.time.replace(/\s*[ap]\.?\s?m\.?\s*$/i, "") : DateTime.time
                                 color: Appearance.colors.colOnPrimaryContainer
                                 font {
                                     pixelSize: 56
@@ -980,6 +980,15 @@ Item {
                                         "ROND": Config.options.background.widgets.clock.digital.font.roundness
                                     })
                                 }
+                            }
+
+                            StyledText {
+                                Layout.topMargin: -10
+                                visible: DateTime.use12HourFormat
+                                text: Qt.locale().toString(DateTime.clock.date, "AP")
+                                font.pixelSize: Appearance.font.pixelSize.normal
+                                font.weight: Font.Medium
+                                color: Appearance.colors.colPrimary
                             }
                         }
 
