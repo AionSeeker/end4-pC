@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Effects
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
@@ -42,10 +43,54 @@ DashboardCard {
 
             Item { Layout.fillWidth: true }
 
-            StyledSwitch {
-                checked: root.checked
-                enabled: false
-                scale: 0.9
+            Rectangle {
+                id: track
+                implicitWidth: 47
+                implicitHeight: 27
+                radius: height / 2
+                color: root.checked ? Appearance.colors.colPrimary : Appearance.m3colors.m3surfaceBright
+
+                Behavior on color {
+                    ColorAnimation { duration: 180 }
+                }
+
+                Rectangle {
+                    anchors.fill: parent
+                    radius: parent.radius
+                    color: "transparent"
+                    border.width: 1
+                    border.color: Qt.rgba(1, 1, 1, 0.06)
+                }
+
+                Rectangle {
+                    id: thumb
+                    width: 23
+                    height: 23
+                    radius: width / 2
+                    anchors.verticalCenter: parent.verticalCenter
+                    x: root.checked ? track.width - width - 2 : 2
+                    color: root.checked ? Appearance.colors.colOnPrimary : Appearance.colors.colPrimary
+
+                    layer.enabled: true
+                    layer.effect: MultiEffect {
+                        shadowEnabled: true
+                        shadowColor: Qt.rgba(0, 0, 0, 0.55)
+                        shadowVerticalOffset: 2
+                        shadowHorizontalOffset: 0
+                        shadowBlur: 0.4
+                    }
+
+                    Behavior on x {
+                        NumberAnimation {
+                            duration: 320
+                            easing.type: Easing.BezierSpline
+                            easing.bezierCurve: [0.42, 1.5, 0.28, 0.95, 1, 1]
+                        }
+                    }
+                    Behavior on color {
+                        ColorAnimation { duration: 180 }
+                    }
+                }
             }
         }
 
