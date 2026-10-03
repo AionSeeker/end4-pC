@@ -75,22 +75,28 @@ DashboardCard {
                         Qt.callLater(() => root.control.set(value));
                     }
 
-                    contentItem: RowLayout {
-                        spacing: 6
-                        Item { Layout.fillWidth: true }
-                        MaterialSymbol {
-                            text: option.modelData.icon ?? ""
-                            iconSize: 18
-                            fill: option.selected ? 1 : 0
-                            color: option.selected ? Appearance.colors.colOnTertiary : Appearance.colors.colOnTertiaryContainer
+                    contentItem: Item {
+                        implicitWidth: optionRow.implicitWidth
+                        implicitHeight: optionRow.implicitHeight
+
+                        RowLayout {
+                            id: optionRow
+                            anchors.centerIn: parent
+                            spacing: 6
+
+                            MaterialSymbol {
+                                text: option.modelData.icon ?? ""
+                                iconSize: 18
+                                fill: option.selected ? 1 : 0
+                                color: option.selected ? Appearance.colors.colOnTertiary : Appearance.colors.colOnTertiaryContainer
+                            }
+                            StyledText {
+                                text: option.modelData.displayName
+                                font.pixelSize: Appearance.font.pixelSize.small
+                                font.weight: Font.Medium
+                                color: option.selected ? Appearance.colors.colOnTertiary : Appearance.colors.colOnTertiaryContainer
+                            }
                         }
-                        StyledText {
-                            text: option.modelData.displayName
-                            font.pixelSize: Appearance.font.pixelSize.small
-                            font.weight: Font.Medium
-                            color: option.selected ? Appearance.colors.colOnTertiary : Appearance.colors.colOnTertiaryContainer
-                        }
-                        Item { Layout.fillWidth: true }
                     }
                 }
             }
