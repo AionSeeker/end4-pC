@@ -175,7 +175,8 @@ ContentPage {
                     onSelected: newValue => { Config.options.settings.style = newValue }
                     options: [
                         { displayName: Translation.tr("Default"), icon: "settings_panorama", value: "default" },
-                        { displayName: Translation.tr("Minimal"), icon: "settings_heart", value: "minimal" }
+                        { displayName: Translation.tr("Minimal"), icon: "settings_heart", value: "minimal" },
+                        { displayName: Translation.tr("Dashboard"), icon: "dashboard", value: "dashboard" }
                     ]
                 }
                 ConfigSpinBox {

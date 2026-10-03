@@ -237,7 +237,7 @@ Singleton {
             }
 
             property JsonObject settings: JsonObject {
-                property string style: "default" // default - minimal
+                property string style: "default" // default - minimal - dashboard
                 property real borderSize: 1
                 property string borderColor: "layer0Border"
                 property list<string> collapsedSections: []
