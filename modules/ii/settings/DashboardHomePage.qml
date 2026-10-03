@@ -44,11 +44,24 @@ Item {
         onTriggered: root.now = new Date()
     }
 
+    function expandPath(raw) {
+        const path = String(raw ?? "").trim();
+        const home = FileUtils.trimFileProtocol(Directories.home).replace(/\/$/, "");
+        if (path === "") return "";
+        if (path === "~") return home;
+        if (path.startsWith("~/")) return home + path.slice(1);
+        if (path.startsWith("/")) return path;
+        if (path.startsWith("home/")) return "/" + path;
+        return home + "/" + path;
+    }
+
+    readonly property string avatarFolder: expandPath(Config.options.profile.avatarPath)
+
     FolderListModel {
         id: avatarFolderModel
-        folder: Config.options.profile.avatarPath !== "" ? Qt.resolvedUrl(Config.options.profile.avatarPath) : ""
+        folder: root.avatarFolder !== "" ? Qt.resolvedUrl(root.avatarFolder) : ""
         showDirs: false
-        nameFilters: ["*.png", "*.svg", "*.jpg", "*.jpeg", "*.webp"]
+        nameFilters: ["*.png", "*.svg", "*.jpg", "*.jpeg", "*.webp", "*.PNG", "*.JPG", "*.JPEG", "*.WEBP"]
     }
 
     function shiftMonth(delta) {
@@ -406,8 +419,12 @@ Item {
                                                         id: saveTimer
                                                         interval: 800
                                                         onTriggered: {
-                                                            if (fieldBox.modelData.id === "name") Config.options.profile.displayName = fieldInput.text;
-                                                            else Config.options.profile.avatarPath = fieldInput.text;
+                                                            if (fieldBox.modelData.id === "name") {
+                                                                Config.options.profile.displayName = fieldInput.text;
+                                                            } else {
+                                                                const expanded = root.expandPath(fieldInput.text);
+                                                                Config.options.profile.avatarPath = expanded;
+                                                            }
                                                         }
                                                     }
 
