@@ -205,7 +205,6 @@ Item {
                     id: userCard
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Layout.maximumHeight: width
                     Layout.minimumHeight: 100
                     tint: Appearance.colors.colPrimaryContainer
                     pager: root.pager
@@ -1004,7 +1003,8 @@ Item {
 
                 DashboardCard {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: tasksContent.implicitHeight + 28
+                    Layout.fillHeight: true
+                    Layout.minimumHeight: tasksContent.implicitHeight + 28
                     tint: Appearance.colors.colSecondaryContainer
                     pager: root.pager
                     staggerMs: root.staggerMs
@@ -1014,9 +1014,7 @@ Item {
 
                     ColumnLayout {
                         id: tasksContent
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.top: parent.top
+                        anchors.fill: parent
                         anchors.margins: 14
                         spacing: 10
 
@@ -1083,7 +1081,9 @@ Item {
 
                         ListView {
                             Layout.fillWidth: true
+                            Layout.fillHeight: true
                             Layout.preferredHeight: 3 * 40 + 2 * 6
+                            Layout.minimumHeight: 3 * 40 + 2 * 6
                             clip: true
                             spacing: 6
                             model: Todo.list.map((t, i) => ({ content: t.content, done: t.done, origIndex: i }))
