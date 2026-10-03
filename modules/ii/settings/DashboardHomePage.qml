@@ -424,9 +424,12 @@ Item {
                                         }
                                     }
 
-                                    Flickable {
+                                    Item {
                                         Layout.fillWidth: true
                                         Layout.fillHeight: true
+
+                                    Flickable {
+                                        anchors.fill: parent
                                         clip: true
                                         contentWidth: width
                                         contentHeight: avatarFlow.implicitHeight
@@ -495,6 +498,7 @@ Item {
                                             }
                                         }
 
+                                    }
                                         StyledText {
                                             anchors.centerIn: parent
                                             visible: avatarFolderModel.count === 0
