@@ -950,7 +950,7 @@ Item {
                                 text: DateTime.time
                                 color: Appearance.colors.colOnPrimaryContainer
                                 font {
-                                    pixelSize: Math.min(Config.options.background.widgets.clock.digital.font.size * 0.9, clockCard.width / 4.6)
+                                    pixelSize: 56
                                     weight: Config.options.background.widgets.clock.digital.font.weight
                                     family: Config.options.background.widgets.clock.digital.font.family
                                     variableAxes: ({
