@@ -268,22 +268,10 @@ QtObject {
             ]
         },
         {
-            page: Translation.tr("Bar"), title: Translation.tr("Tooltips"), icon: "tooltip", cards: [
-                { type: "toggle", key: "bar:Tooltips/Enable", title: Translation.tr("Enable"), icon: "tooltip" },
-                { type: "toggle", key: "bar:Click to show", title: Translation.tr("Click to show"), icon: "ads_click" }
-            ]
-        },
-        {
             page: Translation.tr("Interface"), title: Translation.tr("Transparency"), icon: "opacity", cards: [
                 { type: "toggle", key: "interface:Automatic (from wallpaper)", title: Translation.tr("Auto transparency"), icon: "auto_awesome" },
                 { type: "slider", key: "interface:Transparency/Background", title: Translation.tr("Background"), icon: "opacity" },
                 { type: "slider", key: "interface:Transparency/Content", title: Translation.tr("Content"), icon: "opacity" }
-            ]
-        },
-        {
-            page: Translation.tr("Interface"), title: Translation.tr("Settings Panel"), icon: "settings", cards: [
-                { type: "spin", key: "interface:Border width", title: Translation.tr("Border width"), icon: "border_style" },
-                { type: "swatch", key: "interface:Border color", title: Translation.tr("Border color"), icon: "format_paint", w: 2 }
             ]
         },
         {
