@@ -4,7 +4,7 @@ import QtQuick
 import Quickshell
 
 Singleton {
-    readonly property string position: Config.options.dock.position
+    property string position: Config.options.dock.position ?? "bottom"
     readonly property bool vertical: position !== "bottom"
 
     function mTop(inner, outer, alongStart) {

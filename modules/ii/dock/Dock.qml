@@ -18,14 +18,26 @@ Scope {
     property bool barState: false
     property bool ready: false
 
-    Component.onCompleted: barSettleTimer.start()
+    Component.onCompleted: {
+        DockStyle.position = Config.options.dock.position
+        barSettleTimer.start()
+    }
 
     Timer {
         id: barSettleTimer
         interval: 300
         onTriggered: {
             root.barState = GlobalStates.barOpen
+            DockStyle.position = Config.options.dock.position
             root.ready = true
+        }
+    }
+
+    Connections {
+        target: Config.options.dock
+        function onPositionChanged() {
+            root.ready = false
+            barSettleTimer.restart()
         }
     }
 
