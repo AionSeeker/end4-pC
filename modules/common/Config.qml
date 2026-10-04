@@ -265,6 +265,7 @@ Singleton {
                     property bool blurWidgets: false
                     property real blurRadius: 32
                     property bool shadow: true
+                    property list<string> menuHidden: []
                     property JsonObject clock: JsonObject {
                         property bool enable: true
                         property bool showOnlyWhenLocked: false

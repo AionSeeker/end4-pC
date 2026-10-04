@@ -33,6 +33,7 @@ Item {
         if (type === "style") return [2, 2];
         if (type === "schemes" || type === "barpos") return [2, 2];
         if (type === "weathermap") return [4, 2];
+        if (type === "widgets") return [4, 3];
         if (type === "shape") return [2, 2];
         if (type === "barlayout") return [4, 3];
         if (type === "palette") return [4, 1];
@@ -330,6 +331,7 @@ Item {
                             : modelData.type === "duration" ? durationComponent
                             : modelData.type === "iconpicker" ? iconPickerComponent
                             : modelData.type === "weathermap" ? weatherMapComponent
+                            : modelData.type === "widgets" ? widgetsComponent
                             : selectComponent
 
                         Component {
@@ -507,6 +509,21 @@ Item {
                                 placeholder: slot.modelData.placeholder ?? ""
                                 controlKey: slot.modelData.key
                                 override: catalog.controlFor(slot.modelData.key)
+                                title: slot.modelData.title
+                                icon: slot.modelData.icon
+                                tileShape: slot.modelData.shape
+                                pager: root.pager
+                                staggerMs: root.staggerMs
+                                animIndex: slot.index % 6
+                                travelX: slot.modelData.travelX
+                                travelY: slot.modelData.travelY
+                            }
+                        }
+
+                        Component {
+                            id: widgetsComponent
+                            DashboardWidgetsCard {
+                                anchors.fill: parent
                                 title: slot.modelData.title
                                 icon: slot.modelData.icon
                                 tileShape: slot.modelData.shape

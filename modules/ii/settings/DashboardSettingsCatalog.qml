@@ -405,6 +405,11 @@ QtObject {
             ]
         },
         {
+            page: Translation.tr("Desktop"), title: Translation.tr("Desktop widgets"), icon: "widgets", cards: [
+                { type: "widgets", key: "desktop:Widgets", title: Translation.tr("Desktop widgets"), icon: "widgets", kw: "widgets desktop menu star favorite clock weather calendar media resources todo notes timers sticker visualizer" }
+            ]
+        },
+        {
             page: Translation.tr("Desktop"), title: Translation.tr("Clock"), icon: "schedule", cards: [
                 { type: "toggle", key: "desktop:Clock/Enable", title: Translation.tr("Enable"), icon: "schedule" },
                 { type: "toggle", key: "desktop:Clock/Show only when locked", title: Translation.tr("Only when locked"), icon: "lock" },
