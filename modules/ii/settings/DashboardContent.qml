@@ -239,6 +239,7 @@ Item {
 
     function goToPage(index) {
         if (index === currentPage || switchTimer.running) return;
+        if (currentPage !== homePage && searchInput.text !== "") searchInput.text = "";
         pendingPage = index;
         pageExitRequested();
         forceActiveFocus();
