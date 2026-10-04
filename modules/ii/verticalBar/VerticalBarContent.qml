@@ -173,7 +173,7 @@ Item {
                                 source: root.getWidgetUrl(modelData)
                                 onLoaded: {
                                     if (item && "vertical" in item) item.vertical = true
-                                    if (item && item.hasOwnProperty("mirrored"))
+                                    if (item && modelData === "visualizer")
                                         item.mirrored = root.getMirroredForIndex(root.effectiveLeftLayout, index)
                                 }
                             }
@@ -217,7 +217,7 @@ Item {
                             source: root.getWidgetUrl(modelData)
                             onLoaded: {
                                 if (item && "vertical" in item) item.vertical = true
-                                if (item && item.hasOwnProperty("mirrored"))
+                                if (item && modelData === "visualizer")
                                     item.mirrored = root.getMirroredForIndex(root.effectiveLeftLayout, index)
                             }
                         }
@@ -292,7 +292,7 @@ Item {
                                 source: root.getWidgetUrl(modelData)
                                 onLoaded: {
                                     if (item && "vertical" in item) item.vertical = true
-                                    if (item && item.hasOwnProperty("mirrored"))
+                                    if (item && modelData === "visualizer")
                                         item.mirrored = root.getMirroredForIndex(root.effectiveMiddleLayout, index)
                                 }
                             }
@@ -337,7 +337,7 @@ Item {
                             source: root.getWidgetUrl(modelData)
                             onLoaded: {
                                 if (item && "vertical" in item) item.vertical = true
-                                if (item && item.hasOwnProperty("mirrored"))
+                                if (item && modelData === "visualizer")
                                     item.mirrored = root.getMirroredForIndex(root.effectiveMiddleLayout, index)
                             }
                         }
@@ -413,7 +413,7 @@ Item {
                                 source: root.getWidgetUrl(modelData)
                                 onLoaded: {
                                     if (item && "vertical" in item) item.vertical = true
-                                    if (item && item.hasOwnProperty("mirrored"))
+                                    if (item && modelData === "visualizer")
                                         item.mirrored = root.getMirroredForIndex(root.effectiveRightLayout, index)
                                 }
                             }
@@ -444,7 +444,7 @@ Item {
                             source: root.getWidgetUrl(modelData)
                             onLoaded: {
                                 if (item && "vertical" in item) item.vertical = true
-                                if (item && item.hasOwnProperty("mirrored"))
+                                if (item && modelData === "visualizer")
                                     item.mirrored = root.getMirroredForIndex(root.effectiveRightLayout, index)
                             }
                         }
