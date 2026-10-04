@@ -385,6 +385,15 @@ Item {
             flickableDirection: Flickable.HorizontalFlick
             boundsBehavior: Flickable.StopAtBounds
 
+            WheelHandler {
+                enabled: chipsRow.contentWidth > chipsRow.width
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                onWheel: event => {
+                    const delta = Math.abs(event.angleDelta.x) > Math.abs(event.angleDelta.y) ? event.angleDelta.x : event.angleDelta.y;
+                    chipsRow.contentX = Math.max(0, Math.min(chipsRow.contentWidth - chipsRow.width, chipsRow.contentX - delta));
+                }
+            }
+
             Behavior on height {
                 NumberAnimation { duration: 220 / Math.max(0.5, Config.options.settings.animationSpeed ?? 1); easing.type: Easing.OutCubic }
             }
