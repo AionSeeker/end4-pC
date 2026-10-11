@@ -105,10 +105,15 @@ Item {
             color: "transparent"
             // Clicks on the transparent shadow margin should count as outside.
             mask: Region {
-                item: menuBackground
+                item: menuInputArea
             }
             implicitWidth: menuBackground.implicitWidth + Appearance.sizes.elevationMargin * 2
             implicitHeight: menuBackground.implicitHeight + Appearance.sizes.elevationMargin * 2
+
+            Item {
+                id: menuInputArea
+                anchors.fill: menuBackground
+            }
 
             StyledRectangularShadow {
                 target: menuBackground
@@ -125,6 +130,45 @@ Item {
                 implicitHeight: menuColumn.implicitHeight + padding * 2
                 focus: true
                 Keys.onEscapePressed: root.close()
+
+                opacity: 0
+                transform: Scale {
+                    id: menuScale
+                    origin.x: contextPopup.side === Edges.Right ? 0 : contextPopup.side === Edges.Left ? menuBackground.width : menuBackground.width / 2
+                    origin.y: contextPopup.side === Edges.Top ? menuBackground.height : menuBackground.height / 2
+                    xScale: DockStyle.vertical ? 0.01 : 0.8
+                    yScale: DockStyle.vertical ? 0.8 : 0.01
+                }
+
+                Component.onCompleted: openAnim.start()
+
+                ParallelAnimation {
+                    id: openAnim
+                    NumberAnimation {
+                        target: menuScale
+                        property: DockStyle.vertical ? "xScale" : "yScale"
+                        to: 1
+                        duration: 500
+                        easing.type: Easing.BezierSpline
+                        easing.bezierCurve: Appearance.animationCurves.expressiveFastSpatial
+                    }
+                    NumberAnimation {
+                        target: menuScale
+                        property: DockStyle.vertical ? "yScale" : "xScale"
+                        to: 1
+                        duration: Appearance.animationCurves.expressiveDefaultSpatialDuration
+                        easing.type: Easing.BezierSpline
+                        easing.bezierCurve: Appearance.animationCurves.expressiveDefaultSpatial
+                    }
+                    NumberAnimation {
+                        target: menuBackground
+                        property: "opacity"
+                        to: 1
+                        duration: Appearance.animationCurves.expressiveEffectsDuration
+                        easing.type: Easing.BezierSpline
+                        easing.bezierCurve: Appearance.animationCurves.expressiveEffects
+                    }
+                }
 
                 ColumnLayout {
                     id: menuColumn
