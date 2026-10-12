@@ -89,6 +89,7 @@ DashboardCard {
                             font.family: Appearance.font.family.main
                             color: Appearance.colors.colOnSecondaryContainer
                             selectionColor: Appearance.colors.colSecondary
+                            ContextMenu.menu: StyledTextEditMenu { editor: input }
                             placeholderText: Translation.tr("example.com (one per line)")
                             placeholderTextColor: Qt.rgba(Appearance.colors.colOnSecondaryContainer.r, Appearance.colors.colOnSecondaryContainer.g, Appearance.colors.colOnSecondaryContainer.b, 0.5)
                             Keys.onPressed: event => {
