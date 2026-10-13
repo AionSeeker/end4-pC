@@ -115,7 +115,7 @@ Item {
         catalog.sections.forEach((section, si) => {
             list.push({ id: "section:" + si, kind: "header", requires: section.requires ?? "", when: section.when ?? "", title: section.title, icon: section.icon, page: section.page ?? "", group: section.page ?? "", section: section.title, sectionIndex: si, count: section.cards.length });
             section.cards.forEach(card => list.push(Object.assign({
-                id: card.key, kind: "card", requires: section.requires ?? "", when: section.when ?? "", group: section.page ?? "", section: section.title, sectionIndex: si, kw: card.kw ?? ""
+                id: card.key, kind: "card", ordered: section.ordered ?? false, requires: section.requires ?? "", when: card.when ?? section.when ?? "", group: section.page ?? "", section: section.title, sectionIndex: si, kw: card.kw ?? ""
             }, card)));
         });
         const heroGroups = {};
@@ -143,6 +143,7 @@ Item {
         if (e.when === "layoutdwindle" && (WM.compositor !== "hyprland" || Config.options.hyprland.general.layout !== "dwindle")) return false;
         if (e.when === "layoutmaster" && (WM.compositor !== "hyprland" || Config.options.hyprland.general.layout !== "master")) return false;
         if (e.when === "hyprbordercolor" && (WM.compositor !== "hyprland" || !Config.options.hyprland.general.borderColor.enable)) return false;
+        if (e.when === "football" && !Config.options.sidebar.football.enable) return false;
         if (e.when === "dockhug" && Config.options.dock.style !== "hug") return false;
         if (e.when === "dockfloat" && Config.options.dock.style === "hug") return false;
         if (e.when === "clockdigital" && Config.options.background.widgets.clock.style !== "digital") return false;
@@ -173,7 +174,42 @@ Item {
         return card.type === "toggle" && !card.keepOrder && card.title === Translation.tr("Enable");
     }
 
+    function packSequential(cards, capacity) {
+        const placed = [];
+        let remaining = capacity;
+        let rowStart = 0;
+        cards.forEach(card => {
+            const span = Math.min(spanOf(card)[0], capacity);
+            if (span > remaining) {
+                let leftover = remaining;
+                let i = placed.length - 1;
+                while (leftover > 0 && i >= rowStart) {
+                    placed[i].w += 1;
+                    leftover--;
+                    i = i === rowStart ? placed.length - 1 : i - 1;
+                }
+                remaining = capacity;
+                rowStart = placed.length;
+            }
+            placed.push({ entry: card, w: span, h: spanOf(card)[1] });
+            remaining -= span;
+            if (remaining === 0) {
+                remaining = capacity;
+                rowStart = placed.length;
+            }
+        });
+        let leftover = remaining === capacity ? 0 : remaining;
+        let i = placed.length - 1;
+        while (leftover > 0 && i >= rowStart) {
+            placed[i].w += 1;
+            leftover--;
+            i = i === rowStart ? placed.length - 1 : i - 1;
+        }
+        return placed;
+    }
+
     function packRows(allCards, capacity) {
+        if (allCards.length > 0 && allCards[0].ordered) return packSequential(allCards, capacity);
         const enables = allCards.filter(c => isEnableCard(c));
         const cards = allCards.filter(c => !isEnableCard(c));
         const fulls = cards.filter(c => spanOf(c)[0] === 4);
@@ -373,6 +409,24 @@ Item {
             if (place && place.y <= top) best = sec.index;
         });
         return best;
+    }
+
+    property string pendingSection: ""
+
+    function openSection(groupName, sectionTitle) {
+        GlobalStates.dashboardGroup = groupName;
+        root.pendingSection = sectionTitle;
+        pendingScrollTimer.restart();
+    }
+
+    Timer {
+        id: pendingScrollTimer
+        interval: 280
+        onTriggered: {
+            const index = catalog.sections.findIndex(section => (section.page ?? "") === root.group && section.title === root.pendingSection);
+            if (index >= 0) root.scrollToSection(index);
+            root.pendingSection = "";
+        }
     }
 
     function scrollToSection(index) {
@@ -664,6 +718,9 @@ Item {
                             id: toggleComponent
                             DashboardToggleCard {
                                 anchors.fill: parent
+                                actionIcon: slot.modelData.action?.icon ?? ""
+                                actionTip: slot.modelData.action?.tip ?? ""
+                                onActionTriggered: root.openSection(slot.modelData.action.group, slot.modelData.action.section)
                                 controlKey: slot.modelData.key
                                 override: catalog.controlFor(slot.modelData.key)
                                 title: slot.modelData.title

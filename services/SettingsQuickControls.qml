@@ -185,6 +185,16 @@ Singleton {
         "interface:Left Sidebar/Enable": root.optionSwitch("sidebar.media.enable"),
         "interface:Follow Album Colors": root.optionSwitch("sidebar.media.artColors"),
         "interface:Enable Translator": root.optionSwitch("sidebar.translator.enable"),
+        "interface:Enable Football": root.optionSwitch("sidebar.football.enable"),
+        "interface:Football/Alerts": root.optionSwitch("sidebar.football.alerts"),
+        "interface:Football/Scope": root.optionSelect("sidebar.football.alertsScope", [
+            { displayName: Translation.tr("My parlay"), icon: "layers", value: "parlay" },
+            { displayName: Translation.tr("All matches"), icon: "public", value: "all" }
+        ]),
+        "interface:Football/Goal sound": root.optionSwitch("sidebar.football.goalSound"),
+        "interface:Football/Corner sound": root.optionSwitch("sidebar.football.cornerSound"),
+        "interface:Football/Notify": root.optionSwitch("sidebar.football.notify"),
+        "interface:Football/Volume": root.optionSpin("sidebar.football.soundVolume", 0, 100, 5),
         "interface:Banner": root.optionSwitch("sidebar.banner"),
         "interface:Bottom Group": root.optionSwitch("sidebar.bottomGroup"),
         "interface:Right Sidebar/Media Player": root.optionSwitch("sidebar.mediaPlayer"),
