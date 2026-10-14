@@ -98,7 +98,6 @@ DashboardCard {
 
                             BatteryGlyph {
                                 anchors.centerIn: parent
-                                scale: 1.5
                                 style: tile.modelData.value
                                 percentage: 0.78
                                 isCharging: false
