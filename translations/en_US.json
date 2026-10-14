@@ -1256,5 +1256,10 @@
   "Pts": "Pts",
   "Loading standings…": "Loading standings…",
   "Could not load the standings": "Could not load the standings",
-  "Form": "Form"
+  "Form": "Form",
+  "Battery style": "Battery style",
+  "Number": "Number",
+  "Show percentage": "Show percentage",
+  "Charging bolt": "Charging bolt",
+  "Choose how the battery looks in the bar": "Choose how the battery looks in the bar"
 }

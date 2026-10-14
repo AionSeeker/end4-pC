@@ -256,6 +256,13 @@ QtObject {
             ]
         },
         {
+            page: Translation.tr("Bar"), title: Translation.tr("Battery"), icon: "battery_android_full", requires: "batteryIndicator", cards: [
+                { type: "batterystyle", key: "bar:Battery/Style", title: Translation.tr("Battery style"), icon: "style", kw: "battery bar ring icon number percentage ios macos windows android" },
+                { type: "toggle", key: "bar:Battery/Show percentage", title: Translation.tr("Show percentage"), icon: "percent" },
+                { type: "toggle", key: "bar:Battery/Show charging", title: Translation.tr("Charging bolt"), icon: "bolt" }
+            ]
+        },
+        {
             page: Translation.tr("Bar"), title: Translation.tr("Resources"), icon: "empty_dashboard", requires: "resources", cards: [
                 { type: "toggle", key: "bar:CPU", title: Translation.tr("CPU"), icon: "memory" },
                 { type: "toggle", key: "bar:CPU Temperature", title: Translation.tr("CPU temperature"), icon: "device_thermostat" },

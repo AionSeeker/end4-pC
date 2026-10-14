@@ -740,6 +740,42 @@ ContentPage {
         }
 
         ContentSection {
+            icon: "battery_android_full"
+            title: Translation.tr("Battery")
+            visible: page.isUsed("batteryIndicator")
+
+            GroupedList {
+                ConfigSelectionArray {
+                    text: Translation.tr("Battery style")
+                    icon: "style"
+                    currentValue: Config.options.bar.battery.style
+                    onSelected: newValue => { Config.options.bar.battery.style = newValue }
+                    options: [
+                        { displayName: "Android", icon: "battery_android_full", value: "bar" },
+                        { displayName: Translation.tr("Ring"), icon: "donut_large", value: "ring" },
+                        { displayName: Translation.tr("Icon"), icon: "battery_android_6", value: "icon" },
+                        { displayName: Translation.tr("Number"), icon: "pin", value: "number" },
+                        { displayName: "iOS", icon: "tablet_mac", value: "ios" },
+                        { displayName: "macOS", icon: "laptop_mac", value: "macos" },
+                        { displayName: "Windows", icon: "desktop_windows", value: "windows" }
+                    ]
+                }
+                ConfigSwitch {
+                    buttonIcon: "percent"
+                    text: Translation.tr("Show percentage")
+                    checked: Config.options.bar.battery.showPercentage
+                    onCheckedChanged: { Config.options.bar.battery.showPercentage = checked }
+                }
+                ConfigSwitch {
+                    buttonIcon: "bolt"
+                    text: Translation.tr("Charging bolt")
+                    checked: Config.options.bar.battery.showCharging
+                    onCheckedChanged: { Config.options.bar.battery.showCharging = checked }
+                }
+            }
+        }
+
+        ContentSection {
             icon: "empty_dashboard"
             shape: MaterialShape.Shape.Burst
             title: Translation.tr("Resources")

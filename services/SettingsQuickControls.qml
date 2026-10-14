@@ -366,6 +366,17 @@ Singleton {
             { displayName: Translation.tr("Dots"), icon: "radio_button_checked", value: "dot" },
             { displayName: Translation.tr("Icons"), icon: "interests", value: "icon" }
         ]),
+        "bar:Battery/Style": root.optionSelect("bar.battery.style", [
+            { displayName: "Android", icon: "battery_android_full", value: "bar" },
+            { displayName: Translation.tr("Ring"), icon: "donut_large", value: "ring" },
+            { displayName: Translation.tr("Icon"), icon: "battery_android_6", value: "icon" },
+            { displayName: Translation.tr("Number"), icon: "pin", value: "number" },
+            { displayName: "iOS", icon: "tablet_mac", value: "ios" },
+            { displayName: "macOS", icon: "laptop_mac", value: "macos" },
+            { displayName: "Windows", icon: "desktop_windows", value: "windows" }
+        ]),
+        "bar:Battery/Show percentage": root.optionSwitch("bar.battery.showPercentage"),
+        "bar:Battery/Show charging": root.optionSwitch("bar.battery.showCharging"),
         "bar:Resources/Style": root.optionSelect("bar.resources.style", [
             { displayName: Translation.tr("Filled"), icon: "incomplete_circle", value: "filled" },
             { displayName: Translation.tr("Outline"), icon: "circles", value: "outline" },
