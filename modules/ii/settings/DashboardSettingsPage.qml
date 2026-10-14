@@ -145,7 +145,7 @@ Item {
         if (e.when === "layoutmaster" && (WM.compositor !== "hyprland" || Config.options.hyprland.general.layout !== "master")) return false;
         if (e.when === "hyprbordercolor" && (WM.compositor !== "hyprland" || !Config.options.hyprland.general.borderColor.enable)) return false;
         if (e.when === "football" && !Config.options.sidebar.football.enable) return false;
-        if (e.when === "dockmacos" && Config.options.dock.style !== "macos") return false;
+        if (e.when === "dockmagnify" && !Config.options.dock.magnify) return false;
         if (e.when === "dockhug" && Config.options.dock.style !== "hug") return false;
         if (e.when === "dockfloat" && Config.options.dock.style !== "float") return false;
         if (e.when === "clockdigital" && Config.options.background.widgets.clock.style !== "digital") return false;

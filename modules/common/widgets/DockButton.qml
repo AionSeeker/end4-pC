@@ -2,7 +2,6 @@ import qs.modules.common
 import qs.modules.common.widgets
 import QtQuick
 import QtQuick.Layouts
-import qs.modules.common.functions
 
 RippleButton {
     id: root
@@ -32,9 +31,6 @@ RippleButton {
     z: root.magnifyActive && root.magnifyValue ? root.magnifyValue.scale : 0
     transform: Translate { x: root.magnifyActive && root.magnifyValue ? root.magnifyValue.shift : 0 }
 
-    colBackground: DockStyle.macos ? "transparent" : ColorUtils.transparentize(Appearance?.colors.colLayer1Hover, 1) || "transparent"
-    colBackgroundHover: DockStyle.macos ? "transparent" : Appearance?.colors.colLayer1Hover
-    colRipple: DockStyle.macos ? "transparent" : Appearance?.colors.colLayer1Active
 
     Component.onCompleted: if (root.magnifiable) root.magnifyId = DockMagnify.register(root)
     Component.onDestruction: DockMagnify.unregister(root.magnifyId)

@@ -59,7 +59,7 @@ Scope {
             screen: modelData.screen
             visible: !GlobalStates.screenLocked
 
-            readonly property bool macos: DockStyle.macos
+            readonly property bool macos: DockStyle.magnifying
             readonly property bool hug: Config.options.dock.style === "hug"
             readonly property string position: modelData.position
             readonly property bool vertical: position !== "bottom"
