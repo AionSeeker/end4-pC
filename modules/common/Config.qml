@@ -471,6 +471,10 @@ Singleton {
                         property bool shadow: true
                     }
                 }
+                property JsonObject liveWallpaper: JsonObject {
+                    property bool pauseOnBattery: false // Pause as soon as the charger is out
+                    property real pauseBelowPercent: 0 // Or only under this charge, 0 to ignore
+                }
                 property list<string> screenList: [] 
                 property string wallpaperPath: ""
                 property bool centeredWallpaper: false
