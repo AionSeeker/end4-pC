@@ -76,6 +76,28 @@ Singleton {
         Config.options.search.clipboardPins = pins
     }
 
+    function dedupePinned() {
+        if (dedupeProc.running) return;
+        const pins = (Config.options.search.clipboardPins ?? []).slice();
+        const groups = [];
+        let pinsChanged = false;
+        pins.forEach((pin, index) => {
+            if (!pin.text) return;
+            const matches = root.entries.filter(entry => !root.entryIsImage(entry) && root.entryText(entry) === pin.text);
+            if (matches.length === 0) return;
+            const newestId = root.entryId(matches[0]);
+            if (pin.id !== newestId) {
+                pins[index] = { id: newestId, text: pin.text };
+                pinsChanged = true;
+            }
+            if (matches.length > 1) groups.push(matches.map(entry => root.entryId(entry)));
+        });
+        if (pinsChanged) Config.options.search.clipboardPins = pins;
+        if (groups.length === 0) return;
+        dedupeProc.command = ["python3", "-I", `${FileUtils.trimFileProtocol(Directories.scriptPath)}/clipboard/dedupe.py`, JSON.stringify(groups)];
+        dedupeProc.running = true;
+    }
+
     function refresh() {
         readProc.buffer = []
         readProc.running = true
@@ -108,6 +130,16 @@ Singleton {
         const pasteCommands = [...targetEntries].reverse().map(entry => `printf '${StringUtils.shellSingleQuoteEscape(entry)}' | ${root.cliphistBinary} decode | wl-copy && sleep ${root.pasteDelay} && ${root.pressPasteCommand}`)
         // Act
         Quickshell.execDetached(["bash", "-c", pasteCommands.join(` && sleep ${root.pasteDelay} && `)]);
+    }
+
+    Process {
+        id: dedupeProc
+        stdout: StdioCollector {
+            id: dedupeOut
+        }
+        onExited: {
+            if (parseInt(dedupeOut.text) > 0) root.refresh();
+        }
     }
 
     Process {
@@ -160,7 +192,7 @@ Singleton {
 
     Process {
         id: readProc
-        property list<string> buffer: []
+        property var buffer: []
 
         command: [root.cliphistBinary, "list"]
 
@@ -173,6 +205,7 @@ Singleton {
         onExited: (exitCode, exitStatus) => {
             if (exitCode === 0) {
                 root.entries = readProc.buffer
+                root.dedupePinned()
             } else {
                 root.entries = []
                 console.error("[Cliphist] Failed to refresh with code", exitCode, "and status", exitStatus)
