@@ -150,6 +150,7 @@ Item {
         if (e.when === "dockfloat" && Config.options.dock.style !== "float") return false;
         if (e.when === "clockdigital" && Config.options.background.widgets.clock.style !== "digital") return false;
         if (e.when === "clockcookie" && Config.options.background.widgets.clock.style !== "cookie") return false;
+        if (e.when === "clockdaily" && Config.options.background.widgets.clock.style !== "daily") return false;
         if (e.when === "clockpixel" && Config.options.background.widgets.clock.style !== "pixel") return false;
         return !e.requires || usedWidgets.includes(e.requires);
     }

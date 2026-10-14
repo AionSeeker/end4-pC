@@ -276,9 +276,9 @@ Singleton {
                         property real x: 100
                         property real y: 100
                         property real z: 0
-                        property string style: "cookie"        // Options: "cookie", "digital"
+                        property string style: "cookie"        // Options: "cookie", "digital", "daily", "pixel"
                         property string color: ""
-                        property string styleLocked: "cookie"  // Options: "cookie", "digital"
+                        property string styleLocked: "cookie"  // Options: "cookie", "digital", "daily", "pixel"
                         property JsonObject cookie: JsonObject {
                             property bool aiStyling: false
                             property int sides: 14
@@ -305,6 +305,9 @@ Singleton {
                                 property real size: 90
                                 property real roundness: 0
                             }
+                        }
+                        property JsonObject daily: JsonObject {
+                            property string variant: "badge" // Options: "badge", "morning", "script", "bold"
                         }
                         property JsonObject pixel: JsonObject {
                             property string orientation: "vertical"

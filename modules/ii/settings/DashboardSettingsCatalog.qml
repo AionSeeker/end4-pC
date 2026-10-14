@@ -128,6 +128,7 @@ QtObject {
         "desktop:Clock color": { type: "select", get: () => Config.options.background.widgets.clock.color, set: v => { Config.options.background.widgets.clock.color = v; }, get options() { return ["primary", "secondary", "tertiary", "primaryContainer", "secondaryContainer", "tertiaryContainer", "layer1", "layer0"].map(name => ({ value: name, color: Appearance.getColorFromName(name) })); } },
         "desktop:Clock font family": { type: "select", get: () => Config.options.background.widgets.clock.digital.font.family, set: v => { Config.options.background.widgets.clock.digital.font.family = v; }, get options() { return SystemAppearance.fontOptions(Config.options.background.widgets.clock.digital.font.family); } },
         "desktop:Minute hand": { type: "select", get: () => Config.options.background.widgets.clock.cookie.minuteHandStyle, set: v => { Config.options.background.widgets.clock.cookie.minuteHandStyle = v; }, options: [{ displayName: "", icon: "block", value: "hide" }, { displayName: Translation.tr("Classic"), icon: "show_chart", value: "classic" }, { displayName: Translation.tr("Thin"), icon: "horizontal_rule", value: "thin" }, { displayName: Translation.tr("Medium"), icon: "remove", value: "medium" }, { displayName: Translation.tr("Bold"), icon: "format_bold", value: "bold" }] },
+        "desktop:Daily clock variant": { type: "select", get: () => Config.options.background.widgets.clock.daily.variant, set: v => { Config.options.background.widgets.clock.daily.variant = v; }, options: [{ displayName: Translation.tr("Badge"), icon: "cookie", value: "badge" }, { displayName: Translation.tr("Morning"), icon: "wb_twilight", value: "morning" }, { displayName: Translation.tr("Script"), icon: "draw", value: "script" }, { displayName: Translation.tr("Bold"), icon: "format_bold", value: "bold" }] },
         "desktop:Quote text": { type: "text", get: () => Config.options.background.widgets.clock.quote.text, set: v => { Config.options.background.widgets.clock.quote.text = v; } },
         "desktop:Visualizer enable": { type: "switch", get: () => Config.options.background.widgets.visualizer.enable, set: v => { Config.options.background.widgets.visualizer.enable = v; } },
         "desktop:Visualizer style": { type: "select", get: () => Config.options.background.widgets.visualizer.style, set: v => { Config.options.background.widgets.visualizer.style = v; }, options: [{ displayName: Translation.tr("Classic"), icon: "equalizer", value: "bars" }, { displayName: Translation.tr("Mirror"), icon: "flip", value: "mirror" }, { displayName: Translation.tr("Aurora"), icon: "auto_awesome", value: "aurora" }, { displayName: Translation.tr("Ring"), icon: "radio_button_unchecked", value: "ring" }, { displayName: Translation.tr("Dots"), icon: "more_horiz", value: "dots" }] },
@@ -479,6 +480,13 @@ QtObject {
                 { type: "select", key: "desktop:Minute hand", title: Translation.tr("Minute hand"), icon: "schedule" },
                 { type: "select", key: "desktop:Second hand", title: Translation.tr("Second hand"), icon: "schedule" },
                 { type: "select", key: "desktop:Date style", title: Translation.tr("Date style"), icon: "calendar_today" }
+            ]
+        },
+        {
+            page: Translation.tr("Desktop"), title: Translation.tr("Daily clock"), when: "clockdaily", icon: "today", cards: [
+                { type: "select", key: "desktop:Daily clock variant", title: Translation.tr("Variant"), icon: "style" },
+                { type: "toggle", key: "desktop:Clock auto colors", title: Translation.tr("Automatic colors"), icon: "auto_awesome" },
+                { type: "swatch", key: "desktop:Clock color", title: Translation.tr("Color"), icon: "palette", w: 2 }
             ]
         },
         {
