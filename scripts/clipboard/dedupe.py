@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import hashlib
 import json
+import os
 import subprocess
 import sys
+import time
 
 CLIPHIST = "cliphist"
 
@@ -30,6 +32,10 @@ def main():
                 seen.add(digest)
     if doomed:
         subprocess.run([CLIPHIST, "delete"], input=("\n".join(doomed) + "\n").encode(), timeout=20)
+        log_path = os.path.expanduser("~/.cache/quickshell/clipboard-dedupe.log")
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        with open(log_path, "a", encoding="utf-8") as log:
+            log.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} groups={groups} deleted={doomed}\n")
     print(len(doomed))
 
 

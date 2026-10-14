@@ -72,8 +72,39 @@ Singleton {
         const pins = (Config.options.search.clipboardPins ?? []).slice()
         const index = root.pinIndex(entry)
         if (index !== -1) pins.splice(index, 1)
-        else pins.push({ id: root.entryId(entry), text: root.entryIsImage(entry) ? "" : root.entryText(entry) })
+        else pins.push({ id: root.entryId(entry), text: root.entryIsImage(entry) ? "" : root.entryText(entry), content: "" })
         Config.options.search.clipboardPins = pins
+        if (index === -1 && !root.entryIsImage(entry)) {
+            pinContentProc.pinId = root.entryId(entry);
+            pinContentProc.running = true;
+        }
+    }
+
+    function missingPins(search) {
+        if (root.entries.length === 0) return [];
+        const pins = Config.options.search.clipboardPins ?? [];
+        const ids = new Set(root.entries.map(entry => root.entryId(entry)));
+        const texts = new Set(root.entries.map(entry => root.entryText(entry)));
+        const query = (search ?? "").trim().toLowerCase();
+        return pins.filter(pin => pin.text && !ids.has(pin.id) && !texts.has(pin.text)
+            && (query === "" || pin.text.toLowerCase().includes(query)));
+    }
+
+    function removePin(pin) {
+        Config.options.search.clipboardPins = (Config.options.search.clipboardPins ?? []).filter(item => item.id !== pin.id);
+    }
+
+    Process {
+        id: pinContentProc
+        property string pinId: ""
+        command: ["bash", "-c", `${root.cliphistBinary} decode ${pinContentProc.pinId} | head -c 20000`]
+        stdout: StdioCollector {
+            id: pinContentOut
+        }
+        onExited: {
+            const pins = (Config.options.search.clipboardPins ?? []).map(pin => pin.id === pinContentProc.pinId ? { id: pin.id, text: pin.text, content: pinContentOut.text } : pin);
+            Config.options.search.clipboardPins = pins;
+        }
     }
 
     function dedupePinned() {
