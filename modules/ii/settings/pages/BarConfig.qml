@@ -745,19 +745,22 @@ ContentPage {
             visible: page.isUsed("batteryIndicator")
 
             GroupedList {
-                ConfigSelectionArray {
+                ConfigComboBox {
+                    Layout.fillWidth: true
+                    buttonIcon: "style"
                     text: Translation.tr("Battery style")
-                    icon: "style"
+                    fieldWidth: 220
+                    fixedWidth: true
                     currentValue: Config.options.bar.battery.style
                     onSelected: newValue => { Config.options.bar.battery.style = newValue }
-                    options: [
-                        { displayName: "Android", icon: "battery_android_full", value: "bar" },
-                        { displayName: Translation.tr("Ring"), icon: "donut_large", value: "ring" },
-                        { displayName: Translation.tr("Icon"), icon: "battery_android_6", value: "icon" },
-                        { displayName: Translation.tr("Number"), icon: "pin", value: "number" },
-                        { displayName: "iOS", icon: "tablet_mac", value: "ios" },
-                        { displayName: "macOS", icon: "laptop_mac", value: "macos" },
-                        { displayName: "Windows", icon: "desktop_windows", value: "windows" }
+                    model: [
+                        { displayName: "Android", value: "bar" },
+                        { displayName: "iOS", value: "ios" },
+                        { displayName: "macOS", value: "macos" },
+                        { displayName: "Windows", value: "windows" },
+                        { displayName: Translation.tr("Ring"), value: "ring" },
+                        { displayName: Translation.tr("Icon"), value: "icon" },
+                        { displayName: Translation.tr("Number"), value: "number" }
                     ]
                 }
                 ConfigSwitch {
