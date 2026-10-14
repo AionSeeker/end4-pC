@@ -785,8 +785,26 @@ ContentPage {
                         onSelected: newValue => { Config.options.dock.style = newValue }
                         options: [
                             { displayName: Translation.tr("Float"), icon: "call_to_action", value: "float" },
-                            { displayName: Translation.tr("Hug"), icon: "dock_to_bottom", value: "hug" }
+                            { displayName: Translation.tr("Hug"), icon: "dock_to_bottom", value: "hug" },
+                            { displayName: "macOS", icon: "laptop_mac", value: "macos" }
                         ]
+                    }
+                    ConfigSwitch {
+                        visible: Config.options.dock.style === "macos"
+                        buttonIcon: "zoom_in"
+                        text: Translation.tr("Magnification")
+                        checked: Config.options.dock.magnify
+                        onCheckedChanged: { Config.options.dock.magnify = checked }
+                    }
+                    ConfigSpinBox {
+                        visible: Config.options.dock.style === "macos" && Config.options.dock.magnify
+                        icon: "zoom_out_map"
+                        text: Translation.tr("Magnification amount (%)")
+                        value: Config.options.dock.magnification * 100
+                        from: 110
+                        to: 220
+                        stepSize: 10
+                        onValueChanged: { Config.options.dock.magnification = value / 100 }
                     }
                     ConfigSelectionArray {
                         text: Translation.tr("Position")

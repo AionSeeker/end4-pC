@@ -1261,5 +1261,8 @@
   "Number": "Number",
   "Show percentage": "Show percentage",
   "Charging bolt": "Charging bolt",
-  "Choose how the battery looks in the bar": "Choose how the battery looks in the bar"
+  "Choose how the battery looks in the bar": "Choose how the battery looks in the bar",
+  "Magnification": "Magnification",
+  "Magnification amount": "Magnification amount",
+  "Magnification amount (%)": "Magnification amount (%)"
 }

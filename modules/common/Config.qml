@@ -637,7 +637,7 @@ Singleton {
             property JsonObject dock: JsonObject {
                 property bool enable: false
                 property bool showBackground: true
-                property string style: "float" // float | hug
+                property string style: "float" // float | hug | macos
                 property string position: "bottom" // bottom | left | right
                 property bool showBorder: true
                 property real borderWidth: 1
@@ -653,6 +653,8 @@ Singleton {
                 property bool showMedia: true
                 property bool monochromeIcons: true
                 property real height: 60
+                property real magnification: 1.2
+                property bool magnify: true
                 property real hoverRegionHeight: 2
                 property bool pinnedOnStartup: false
                 property bool hoverToReveal: true // When false, only reveals on empty workspace

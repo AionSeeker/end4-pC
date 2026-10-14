@@ -377,6 +377,8 @@ Singleton {
         ]),
         "bar:Battery/Show percentage": root.optionSwitch("bar.battery.showPercentage"),
         "bar:Battery/Show charging": root.optionSwitch("bar.battery.showCharging"),
+        "interface:Dock/Magnify": root.optionSwitch("dock.magnify"),
+        "interface:Dock/Magnification": root.optionScaledSpin("dock.magnification", 110, 220, 10, 100),
         "bar:Resources/Style": root.optionSelect("bar.resources.style", [
             { displayName: Translation.tr("Filled"), icon: "incomplete_circle", value: "filled" },
             { displayName: Translation.tr("Outline"), icon: "circles", value: "outline" },

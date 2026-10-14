@@ -155,6 +155,7 @@ Item {
                 anchors.fill: parent
 
                 property var appToplevel: slotItem.appEntry
+                magnifiable: true
 
                 innerInset: DockStyle.iconInset
                 outerInset: DockStyle.iconInset
