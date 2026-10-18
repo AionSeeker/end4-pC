@@ -152,7 +152,7 @@ Scope {
                 implicitHeight: dockHoverRegion.implicitHeight + dockRoot.shadowMargin * 2
 
                 readonly property real hiddenOffset: Config.options?.dock.hoverToReveal
-                    ? (DockStyle.thickness - Config.options.dock.hoverRegionHeight)
+                    ? (DockStyle.thickness - Config.options.dock.hoverRegionHeight - (dockRoot.hug ? dockRoot.gap : 0))
                     : (DockStyle.thickness + 1)
                 property real offset: dockRoot.reveal ? 0 : hiddenOffset
 
