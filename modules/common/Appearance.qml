@@ -32,7 +32,8 @@ Singleton {
     }
     property real autoContentTransparency: 0.9
     property real backgroundTransparency: Config?.options.appearance.transparency.enable ? Config?.options.appearance.transparency.automatic ? autoBackgroundTransparency : Config?.options.appearance.transparency.backgroundTransparency : 0
-    property real contentTransparency: Config?.options.appearance.transparency.automatic ? autoContentTransparency : Config?.options.appearance.transparency.contentTransparency
+    property real contentTransparency: Math.max(glassContentTransparency, Config?.options.appearance.transparency.automatic ? autoContentTransparency : Config?.options.appearance.transparency.contentTransparency)
+    readonly property real glassContentTransparency: Config?.options.background.widgets.glass.enable ? 0.6 : 0
     
     function getColorFromName(name) {
         switch (name) {

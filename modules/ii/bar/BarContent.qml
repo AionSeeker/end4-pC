@@ -93,6 +93,13 @@ Item {
         border.color: Config.options.bar.cornerStyle === 1 && !Config.options.bar.showBackground ? "transparent" : ColorUtils.transparentize(Appearance.colors.colLayer0Border, 0.8) 
     }
 
+    WindowGlass {
+        anchors.fill: barBackground
+        glassEnabled: barBackground.color.a > 0
+        cardRadius: barBackground.radius
+        tint: barBackground.color
+    }
+
     // center-only
     readonly property bool centerOnly: root.effectiveLeftLayout.length === 0
         && root.effectiveRightLayout.length === 0
@@ -106,6 +113,7 @@ Item {
 
     RoundCorner {
         id: leftPillCorner
+        glass: true
         visible: root.centerOnly && Config.options.bar.showBackground && Config.options.bar.cornerStyle === 0 
         x: barContent.centerPillX - implicitSize
         implicitSize: Appearance.rounding.screenRounding
@@ -136,6 +144,16 @@ Item {
 
     Rectangle {
         id: centerPill
+        WindowGlass {
+            anchors.fill: parent
+            glassEnabled: (parent?.color.a ?? 0) > 0
+            cardRadius: parent?.radius ?? 0
+            topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
+            topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
+            bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
+            bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
+            tint: parent?.color ?? 'transparent'
+        }
         visible: centerOnly && Config.options.bar.showBackground && Config.options.bar.cornerStyle !== 2 
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
@@ -158,6 +176,7 @@ Item {
 
     RoundCorner {
         id: rightPillCorner
+        glass: true
         visible: root.centerOnly && Config.options.bar.showBackground && Config.options.bar.cornerStyle === 0
         x: barContent.centerPillX + barContent.centerPillWidth
         implicitSize: Appearance.rounding.screenRounding
@@ -202,6 +221,16 @@ Item {
             // Material pill wrapper
             Rectangle {
                 id: leftMaterialPill
+                WindowGlass {
+                    anchors.fill: parent
+                    glassEnabled: (parent?.color.a ?? 0) > 0
+                    cardRadius: parent?.radius ?? 0
+                    topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
+                    topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
+                    bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
+                    bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
+                    tint: parent?.color ?? 'transparent'
+                }
                 visible: root.useTabWrapper && root.effectiveLeftLayout.length > 0
                 anchors.left: root.hasTabs ? parent.left : undefined
                 anchors.top: (root.hasTabs && !Config.options.bar.bottom) ? parent.top : undefined
@@ -251,6 +280,7 @@ Item {
 
             RoundCorner {
                 id: leftRightOutwardCorner
+                glass: true
                 visible: root.hasTabs && root.effectiveLeftLayout.length > 0
                 anchors.left: leftMaterialPill.right
                 anchors.top: !Config.options.bar.bottom ? parent.top : undefined
@@ -338,6 +368,7 @@ Item {
 
             RoundCorner {
                 id: centerLeftOutwardCorner
+                glass: true
                 visible: root.hasTabs && root.effectiveMiddleLayout.length > 0
                 anchors.right: centerMaterialPill.left
                 anchors.top: !Config.options.bar.bottom ? parent.top : undefined
@@ -350,6 +381,16 @@ Item {
             // Material pill wrapper
             Rectangle {
                 id: centerMaterialPill
+                WindowGlass {
+                    anchors.fill: parent
+                    glassEnabled: (parent?.color.a ?? 0) > 0
+                    cardRadius: parent?.radius ?? 0
+                    topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
+                    topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
+                    bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
+                    bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
+                    tint: parent?.color ?? 'transparent'
+                }
                 visible: root.useTabWrapper && root.effectiveMiddleLayout.length > 0
                 anchors.centerIn: parent
                 width: centerMaterialRow.implicitWidth + (root.hasTabs ? 16 : 10)
@@ -397,6 +438,7 @@ Item {
 
             RoundCorner {
                 id: centerRightOutwardCorner
+                glass: true
                 visible: root.hasTabs && root.effectiveMiddleLayout.length > 0
                 anchors.left: centerMaterialPill.right
                 anchors.top: !Config.options.bar.bottom ? parent.top : undefined
@@ -465,6 +507,7 @@ Item {
 
             RoundCorner {
                 id: rightLeftOutwardCorner
+                glass: true
                 visible: root.hasTabs && root.effectiveRightLayout.length > 0
                 anchors.right: rightMaterialPill.left
                 anchors.top: !Config.options.bar.bottom ? parent.top : undefined
@@ -477,6 +520,16 @@ Item {
             // Material pill wrapper
             Rectangle {
                 id: rightMaterialPill
+                WindowGlass {
+                    anchors.fill: parent
+                    glassEnabled: (parent?.color.a ?? 0) > 0
+                    cardRadius: parent?.radius ?? 0
+                    topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
+                    topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
+                    bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
+                    bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
+                    tint: parent?.color ?? 'transparent'
+                }
                 visible: root.useTabWrapper && root.effectiveRightLayout.length > 0
                 anchors.right: root.hasTabs ? parent.right : undefined
                 anchors.top: (root.hasTabs && !Config.options.bar.bottom) ? parent.top : undefined

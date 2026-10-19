@@ -83,6 +83,12 @@ Item {
 
     Rectangle {
         id: barBackground
+        WindowGlass {
+            anchors.fill: parent
+            glassEnabled: (parent?.color.a ?? 0) > 0
+            cardRadius: parent?.radius ?? 0
+            tint: parent?.color ?? 'transparent'
+        }
         anchors {
             fill: parent
             margins: Config.options.bar.cornerStyle === 1 ? Appearance.sizes.hyprlandGapsOut : 0
@@ -100,6 +106,16 @@ Item {
     // centerOnly
     Rectangle {
         id: centerPill
+        WindowGlass {
+            anchors.fill: parent
+            glassEnabled: (parent?.color.a ?? 0) > 0
+            cardRadius: parent?.radius ?? 0
+            topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
+            topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
+            bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
+            bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
+            tint: parent?.color ?? 'transparent'
+        }
         visible: root.centerOnly && Config.options.bar.showBackground && Config.options.bar.cornerStyle !== 2
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -137,6 +153,16 @@ Item {
             // Material pill wrapper
             Rectangle {
                 id: topMaterialPill
+                WindowGlass {
+                    anchors.fill: parent
+                    glassEnabled: (parent?.color.a ?? 0) > 0
+                    cardRadius: parent?.radius ?? 0
+                    topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
+                    topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
+                    bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
+                    bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
+                    tint: parent?.color ?? 'transparent'
+                }
                 visible: root.useTabWrapper && root.effectiveLeftLayout.length > 0
                 anchors.top: parent.top
                 anchors.left: parent.left
@@ -188,6 +214,7 @@ Item {
 
             RoundCorner {
                 id: topBottomOutwardCorner
+                glass: true
                 visible: root.hasTabs && root.effectiveLeftLayout.length > 0
                 anchors.top: topMaterialPill.bottom
                 anchors.left: !Config.options.bar.bottom ? parent.left : undefined
@@ -241,6 +268,7 @@ Item {
 
             RoundCorner {
                 id: centerTopOutwardCorner
+                glass: true
                 visible: root.hasTabs && root.effectiveMiddleLayout.length > 0
                 anchors.bottom: centerMaterialPill.top
                 anchors.left: !Config.options.bar.bottom ? parent.left : undefined
@@ -255,6 +283,16 @@ Item {
             // Material pill wrapper
             Rectangle {
                 id: centerMaterialPill
+                WindowGlass {
+                    anchors.fill: parent
+                    glassEnabled: (parent?.color.a ?? 0) > 0
+                    cardRadius: parent?.radius ?? 0
+                    topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
+                    topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
+                    bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
+                    bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
+                    tint: parent?.color ?? 'transparent'
+                }
                 visible: root.useTabWrapper && root.effectiveMiddleLayout.length > 0
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -307,6 +345,7 @@ Item {
 
             RoundCorner {
                 id: centerBottomOutwardCorner
+                glass: true
                 visible: root.hasTabs && root.effectiveMiddleLayout.length > 0
                 anchors.top: centerMaterialPill.bottom
                 anchors.left: !Config.options.bar.bottom ? parent.left : undefined
@@ -363,6 +402,7 @@ Item {
 
             RoundCorner {
                 id: bottomTopOutwardCorner
+                glass: true
                 visible: root.hasTabs && root.effectiveRightLayout.length > 0
                 anchors.bottom: bottomMaterialPill.top
                 anchors.left: !Config.options.bar.bottom ? parent.left : undefined
@@ -377,6 +417,16 @@ Item {
             // Material pill wrapper
             Rectangle {
                 id: bottomMaterialPill
+                WindowGlass {
+                    anchors.fill: parent
+                    glassEnabled: (parent?.color.a ?? 0) > 0
+                    cardRadius: parent?.radius ?? 0
+                    topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
+                    topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
+                    bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
+                    bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
+                    tint: parent?.color ?? 'transparent'
+                }
                 visible: root.useTabWrapper && root.effectiveRightLayout.length > 0
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left

@@ -71,6 +71,15 @@ Item {
             bottomRightRadius: Appearance.rounding.normal
             color: Appearance.colors.colLayer1
 
+            WindowGlass {
+                anchors.fill: parent
+                topLeftRadius: parent.topLeftRadius
+                topRightRadius: parent.topRightRadius
+                bottomLeftRadius: parent.bottomLeftRadius
+                bottomRightRadius: parent.bottomRightRadius
+                tint: parent.color
+            }
+
             SwipeView { // Content pages
                 id: swipeView
                 anchors.fill: parent
