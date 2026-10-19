@@ -85,19 +85,20 @@ Item {
         id: barBackground
         WindowGlass {
             anchors.fill: parent
-            glassEnabled: (parent?.color.a ?? 0) > 0
+            glassEnabled: (parent?.fill.a ?? 0) > 0
             cardRadius: parent?.radius ?? 0
-            tint: parent?.color ?? 'transparent'
+            tint: parent?.fill ?? 'transparent'
         }
         anchors {
             fill: parent
             margins: Config.options.bar.cornerStyle === 1 ? Appearance.sizes.hyprlandGapsOut : 0
         }
-        color: (!centerOnly && Config.options.bar.showBackground && Config.options.bar.cornerStyle !== 2 && !root.useTabWrapper)
+        property color fill: (!centerOnly && Config.options.bar.showBackground && Config.options.bar.cornerStyle !== 2 && !root.useTabWrapper)
             ? (Config.options.bar.followFrameColor
                 ? Appearance.getColorFromName(Config.options.bar.frameColor)
                 : Appearance.colors.colUiBackground)
             : "transparent"
+        color: Config.options.background.widgets.glass.enable && fill.a > 0 ? "transparent" : fill
         radius: Config.options.bar.cornerStyle === 1 ? Appearance.rounding.windowRounding + 6 : 0
         border.width: (!root.centerOnly && Config.options.bar.cornerStyle === 1) ? 1 : 0
         border.color: Config.options.bar.showBackground ? Appearance.colors.colLayer0Border : "transparent"
@@ -108,22 +109,23 @@ Item {
         id: centerPill
         WindowGlass {
             anchors.fill: parent
-            glassEnabled: (parent?.color.a ?? 0) > 0
+            glassEnabled: (parent?.fill.a ?? 0) > 0
             cardRadius: parent?.radius ?? 0
             topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
             topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
             bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
             bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
-            tint: parent?.color ?? 'transparent'
+            tint: parent?.fill ?? 'transparent'
         }
         visible: root.centerOnly && Config.options.bar.showBackground && Config.options.bar.cornerStyle !== 2
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         height: middleCol.implicitHeight + 7
         width: parent.width - (Config.options.bar.cornerStyle === 1 ? Appearance.sizes.hyprlandGapsOut * 2 : 0)
-        color: Config.options.bar.followFrameColor
+        property color fill: Config.options.bar.followFrameColor
             ? Appearance.getColorFromName(Config.options.bar.frameColor)
             : Appearance.colors.colUiBackground
+        color: Config.options.background.widgets.glass.enable && fill.a > 0 ? "transparent" : fill
         radius: Config.options.bar.cornerStyle === 1 ? Appearance.rounding.windowRounding : 0
         border.width: Config.options.bar.cornerStyle === 1 ? 1 : 0
         border.color: Appearance.colors.colLayer0Border
@@ -155,13 +157,13 @@ Item {
                 id: topMaterialPill
                 WindowGlass {
                     anchors.fill: parent
-                    glassEnabled: (parent?.color.a ?? 0) > 0
+                    glassEnabled: (parent?.fill.a ?? 0) > 0
                     cardRadius: parent?.radius ?? 0
                     topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
                     topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
                     bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
                     bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
-                    tint: parent?.color ?? 'transparent'
+                    tint: parent?.fill ?? 'transparent'
                 }
                 visible: root.useTabWrapper && root.effectiveLeftLayout.length > 0
                 anchors.top: parent.top
@@ -171,7 +173,8 @@ Item {
                     ? (root.hasTabs ? (topMaterialCol.implicitHeight + 16) : (topMaterialCol.implicitHeight + 10))
                     : 0
                 radius: root.hasTabs ? 0 : Appearance.rounding.full
-                color: root.materialPillBgColor
+                property color fill: root.materialPillBgColor
+                color: Config.options.background.widgets.glass.enable && fill.a > 0 ? "transparent" : fill
 
                 topLeftRadius: root.hasTabs ? 0 : radius
                 topRightRadius: root.hasTabs ? 0 : radius
@@ -285,13 +288,13 @@ Item {
                 id: centerMaterialPill
                 WindowGlass {
                     anchors.fill: parent
-                    glassEnabled: (parent?.color.a ?? 0) > 0
+                    glassEnabled: (parent?.fill.a ?? 0) > 0
                     cardRadius: parent?.radius ?? 0
                     topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
                     topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
                     bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
                     bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
-                    tint: parent?.color ?? 'transparent'
+                    tint: parent?.fill ?? 'transparent'
                 }
                 visible: root.useTabWrapper && root.effectiveMiddleLayout.length > 0
                 anchors.verticalCenter: parent.verticalCenter
@@ -301,7 +304,8 @@ Item {
                     ? (root.hasTabs ? (centerMaterialCol.implicitHeight + 16) : (centerMaterialCol.implicitHeight + 10))
                     : 0
                 radius: root.hasTabs ? 0 : Appearance.rounding.full
-                color: root.materialPillBgColor
+                property color fill: root.materialPillBgColor
+                color: Config.options.background.widgets.glass.enable && fill.a > 0 ? "transparent" : fill
 
                 topLeftRadius: (root.hasTabs && Config.options.bar.bottom) ? Appearance.rounding.screenRounding : (root.hasTabs ? 0 : radius)
                 bottomLeftRadius: (root.hasTabs && Config.options.bar.bottom) ? Appearance.rounding.screenRounding : (root.hasTabs ? 0 : radius)
@@ -419,13 +423,13 @@ Item {
                 id: bottomMaterialPill
                 WindowGlass {
                     anchors.fill: parent
-                    glassEnabled: (parent?.color.a ?? 0) > 0
+                    glassEnabled: (parent?.fill.a ?? 0) > 0
                     cardRadius: parent?.radius ?? 0
                     topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
                     topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
                     bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
                     bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
-                    tint: parent?.color ?? 'transparent'
+                    tint: parent?.fill ?? 'transparent'
                 }
                 visible: root.useTabWrapper && root.effectiveRightLayout.length > 0
                 anchors.bottom: parent.bottom
@@ -435,7 +439,8 @@ Item {
                     ? (root.hasTabs ? (bottomMaterialCol.implicitHeight + 16) : (bottomMaterialCol.implicitHeight + 10))
                     : 0
                 radius: root.hasTabs ? 0 : Appearance.rounding.full
-                color: root.materialPillBgColor
+                property color fill: root.materialPillBgColor
+                color: Config.options.background.widgets.glass.enable && fill.a > 0 ? "transparent" : fill
 
                 bottomLeftRadius: root.hasTabs ? 0 : radius
                 bottomRightRadius: root.hasTabs ? 0 : radius
