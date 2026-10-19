@@ -448,11 +448,14 @@ Item {
                                         Layout.fillHeight: true
 
                                     Flickable {
+                                        id: homeAvatars
                                         anchors.fill: parent
                                         clip: true
                                         contentWidth: width
                                         contentHeight: avatarFlow.implicitHeight
                                         boundsBehavior: Flickable.StopAtBounds
+
+                                        TouchpadScrollArea { flickable: homeAvatars }
 
                                         Flow {
                                             id: avatarFlow
@@ -1131,11 +1134,14 @@ Item {
                         }
 
                         ListView {
+                            id: homeTodos
                             Layout.fillWidth: true
                             Layout.preferredHeight: 3 * 40 + 2 * 6
                             clip: true
                             spacing: 6
                             model: Todo.list.map((t, i) => ({ content: t.content, done: t.done, origIndex: i }))
+
+                            TouchpadScrollArea { flickable: homeTodos }
 
                             delegate: RippleButton {
                                 required property var modelData

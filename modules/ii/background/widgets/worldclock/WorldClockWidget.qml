@@ -225,6 +225,8 @@ AbstractBackgroundWidget {
                         contentHeight: settingsColumn.implicitHeight
                         boundsBehavior: Flickable.StopAtBounds
 
+                        TouchpadScrollArea { flickable: settingsFlick }
+
                         ColumnLayout {
                             id: settingsColumn
                             width: settingsFlick.width
