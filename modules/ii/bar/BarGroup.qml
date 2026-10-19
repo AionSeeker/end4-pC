@@ -145,13 +145,13 @@ Item {
         id: background
         WindowGlass {
             anchors.fill: parent
-            glassEnabled: (parent?.color.a ?? 0) > 0
+            glassEnabled: (parent?.fill.a ?? 0) > 0
             cardRadius: parent?.radius ?? 0
             topLeftRadius: parent && parent.topLeftRadius >= 0 ? parent.topLeftRadius : cardRadius
             topRightRadius: parent && parent.topRightRadius >= 0 ? parent.topRightRadius : cardRadius
             bottomLeftRadius: parent && parent.bottomLeftRadius >= 0 ? parent.bottomLeftRadius : cardRadius
             bottomRightRadius: parent && parent.bottomRightRadius >= 0 ? parent.bottomRightRadius : cardRadius
-            tint: parent?.color ?? 'transparent'
+            tint: parent?.fill ?? 'transparent'
         }
         anchors {
             fill: parent
@@ -160,7 +160,7 @@ Item {
             leftMargin: root.vertical ? 4 : 0
             rightMargin: root.vertical ? 4 : 0
         }
-        color: root.morphEdge !== ""
+        property color fill: root.morphEdge !== ""
             ? Appearance.colors.colUiPopupBackground
             : !root.paintBackground
             ? "transparent"
@@ -175,6 +175,8 @@ Item {
                         : Config.options.bar.cornerStyle === 2 || (Config.options?.bar.borderless === "segmented" && !Config.options.bar.showBackground)
                             ? Appearance.colors.colUiBackground
                             : root.resolvedGroupColor)
+
+        color: Config.options.background.widgets.glass.enable && fill.a > 0 ? "transparent" : fill
 
         border.width: root.morphEdge !== "" ? 0 : root.style.borderWidth ?? (root.paintBackground && root.isSegmented && !root.isMaterial ? 1 : 0)
         border.color: root.resolveColorName(root.style.borderColor) ?? Appearance.colors.colLayer0Border
