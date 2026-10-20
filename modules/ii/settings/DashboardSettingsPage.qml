@@ -549,8 +549,13 @@ Item {
             flickDeceleration: 4000
             maximumFlickVelocity: 2500
 
+            TouchpadScrollArea {
+                id: touchpadScroll
+                flickable: flick
+            }
+
             Behavior on contentY {
-                enabled: !flick.moving && !flick.dragging
+                enabled: !touchpadScroll.scrolling && !flick.moving && !flick.dragging
                 NumberAnimation { duration: 180; easing.type: Easing.OutCubic }
             }
 
