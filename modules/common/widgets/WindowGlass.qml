@@ -16,6 +16,7 @@ Item {
     property bool glassEnabled: true
     property real tintStrength: 0.3
     readonly property bool live: glassEnabled && (Config.options?.background?.widgets?.glass?.enable ?? false)
+    readonly property bool tracking: live && (win?.visible ?? true)
 
     readonly property var win: QsWindow.window
     readonly property var scr: win?.screen ?? null
@@ -111,47 +112,29 @@ Item {
     }
 
     function kick() {
-        if (!live) return
+        if (!tracking) return
         refresh()
         if (win && !floating) GlassLayers.refresh()
         settleTimer.restart()
         ticker.running = true
     }
 
-    property var ancestors: []
-
-    function rebuild() {
-        const list = []
-        if (live) {
-            for (let it = parent; it; it = it.parent) list.push(it)
-        }
-        ancestors = list
-        kick()
+    readonly property var ancestorGeometry: {
+        if (!tracking) return []
+        const sig = []
+        for (let it = parent; it; it = it.parent) sig.push(it.x, it.y, it.width, it.height, it.scale)
+        return sig
     }
 
-    onParentChanged: rebuild()
+    onAncestorGeometryChanged: kick()
+    onTrackingChanged: kick()
+    onParentChanged: kick()
     onXChanged: kick()
     onYChanged: kick()
     onWidthChanged: kick()
     onHeightChanged: kick()
     onVisibleChanged: kick()
-    onLiveChanged: rebuild()
-    Component.onCompleted: rebuild()
-
-    Instantiator {
-        model: root.ancestors
-        delegate: Connections {
-            required property var modelData
-            target: modelData
-            ignoreUnknownSignals: true
-            function onXChanged() { root.kick() }
-            function onYChanged() { root.kick() }
-            function onWidthChanged() { root.kick() }
-            function onHeightChanged() { root.kick() }
-            function onScaleChanged() { root.kick() }
-            function onParentChanged() { root.rebuild() }
-        }
-    }
+    Component.onCompleted: kick()
 
     Connections {
         target: root.win
