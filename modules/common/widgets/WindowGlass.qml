@@ -15,6 +15,7 @@ Item {
     property color tint: "transparent"
     property bool glassEnabled: true
     property real tintStrength: 0.3
+    readonly property bool live: glassEnabled && (Config.options?.background?.widgets?.glass?.enable ?? false)
 
     readonly property var win: QsWindow.window
     readonly property var scr: win?.screen ?? null
@@ -77,7 +78,7 @@ Item {
     }
 
     readonly property point winPos: {
-        if (!win || !scr) return Qt.point(0, 0)
+        if (!live || !win || !scr) return Qt.point(0, 0)
         if (floating) return Qt.point(floatX, floatY)
         if (popup) return popupOffset(win, scr)
         return panelOffset(win, scr)
@@ -87,7 +88,7 @@ Item {
 
     Process {
         id: tracker
-        running: root.floating && !!root.win?.visible && root.glassEnabled && Config.options.background.widgets.glass.enable
+        running: root.live && root.floating && !!root.win?.visible
         command: ["bash", "-c", "while :; do hyprctl -j activewindow | tr -d '\\n'; echo; sleep 0.016; done"]
         stdout: SplitParser {
             onRead: line => {
@@ -110,6 +111,7 @@ Item {
     }
 
     function kick() {
+        if (!live) return
         refresh()
         if (win && !floating) GlassLayers.refresh()
         settleTimer.restart()
@@ -120,7 +122,9 @@ Item {
 
     function rebuild() {
         const list = []
-        for (let it = parent; it; it = it.parent) list.push(it)
+        if (live) {
+            for (let it = parent; it; it = it.parent) list.push(it)
+        }
         ancestors = list
         kick()
     }
@@ -131,7 +135,7 @@ Item {
     onWidthChanged: kick()
     onHeightChanged: kick()
     onVisibleChanged: kick()
-    onGlassEnabledChanged: kick()
+    onLiveChanged: rebuild()
     Component.onCompleted: rebuild()
 
     Instantiator {
@@ -151,6 +155,7 @@ Item {
 
     Connections {
         target: root.win
+        enabled: root.live
         function onWidthChanged() { root.kick() }
         function onHeightChanged() { root.kick() }
         function onVisibleChanged() { root.kick() }
@@ -176,7 +181,7 @@ Item {
 
     Loader {
         anchors.fill: parent
-        active: root.glassEnabled && Config.options.background.widgets.glass.enable && !!root.scr && root.wallpaper !== ""
+        active: root.live && !!root.scr && root.wallpaper !== ""
 
         sourceComponent: Item {
             Image {
