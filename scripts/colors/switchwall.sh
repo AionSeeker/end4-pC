@@ -67,6 +67,11 @@ handle_kde_material_you_colors() {
     if [[ "$lock_konsole" == "true" ]]; then
         konsole_lock_restore
     fi
+
+    # kde-material-you-colors rewrites the KDE icon theme from its own config.
+    # Re-assert the managed theme after the wrapper, but only when the user
+    # enabled the override (the manager enforces that policy).
+    apply_icon_override_safety_net "$mode_flag"
 }
 
 pre_process() {
@@ -82,6 +87,20 @@ pre_process() {
     if [ ! -d "$CACHE_DIR"/user/generated ]; then
         mkdir -p "$CACHE_DIR"/user/generated
     fi
+}
+
+update_icon_scheme() {
+    local mode_flag="$1"
+    local manager="$SCRIPT_DIR/../theming/icon-theme-manager.sh"
+    [ -x "$manager" ] || return 0
+    bash "$manager" --sync --apply --mode "$mode_flag" --source wallpaper || true
+}
+
+apply_icon_override_safety_net() {
+    local mode_flag="$1"
+    local manager="$SCRIPT_DIR/../theming/icon-theme-manager.sh"
+    [ -x "$manager" ] || return 0
+    bash "$manager" --post-kde --mode "$mode_flag" || true
 }
 
 post_process() {
@@ -114,6 +133,7 @@ apply_named_scheme() {
             return 1
         }
     "$SCRIPT_DIR"/applycolor.sh
+    update_icon_scheme "$mode_flag"
     apply_named_qt &
     "$SCRIPT_DIR/code/material-code-set-color.sh" &
 }
@@ -442,6 +462,7 @@ switch() {
 
     if [[ -z "$colors_lock_flag" ]]; then
         "$SCRIPT_DIR"/applycolor.sh
+        update_icon_scheme "$mode_flag"
     fi
 
     max_width_desired="$(hyprctl monitors -j | jq '([.[].width] | min)' | xargs)"
