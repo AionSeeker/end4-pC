@@ -72,9 +72,10 @@ AbstractBackgroundWidget {
                 implicitWidth: 32
                 implicitHeight: 32
                 text: "open_in_new"
-                Accessible.name: Translation.tr("Open Spun")
+                enabled: root.player?.canRaise ?? false
+                Accessible.name: Translation.tr("Open music player")
                 onClicked: Spun.open()
-                StyledToolTip { text: Translation.tr("Open Spun") }
+                StyledToolTip { text: Translation.tr("Open music player") }
             }
         }
 
@@ -175,7 +176,8 @@ AbstractBackgroundWidget {
             spacing: 2
             StyledText {
                 Layout.fillWidth: true
-                text: root.player?.trackTitle || Translation.tr("Ready to spin")
+                text: root.player ? root.player.trackTitle || Translation.tr("Unknown Title")
+                    : Translation.tr("No music playing")
                 font.weight: Font.DemiBold
                 horizontalAlignment: Text.AlignHCenter
                 elide: Text.ElideRight
@@ -183,14 +185,12 @@ AbstractBackgroundWidget {
             }
             StyledText {
                 Layout.fillWidth: true
-                text: Spun.launchError || (Spun.launching ? Translation.tr("Opening Spun…")
-                    : root.player ? root.player.trackArtist || Translation.tr("Choose music in Spun")
-                    : Translation.tr("Open Spun to start listening"))
+                text: root.player ? root.player.trackArtist || root.player.identity || Translation.tr("Unknown Artist")
+                    : Translation.tr("Start playback in a music player")
                 font.pixelSize: Appearance.font.pixelSize.small
                 horizontalAlignment: Text.AlignHCenter
-                wrapMode: Spun.launchError ? Text.WordWrap : Text.NoWrap
                 elide: Text.ElideRight
-                color: Spun.launchError ? Appearance.m3colors.m3error : Appearance.colors.colSubtext
+                color: Appearance.colors.colSubtext
             }
         }
 
@@ -231,12 +231,11 @@ AbstractBackgroundWidget {
                 implicitWidth: 44
                 implicitHeight: 44
                 text: root.player?.isPlaying ? "pause" : "play_arrow"
-                enabled: !root.player || root.player.canTogglePlaying
+                enabled: MprisController.canTogglePlaying
                 colBackground: Appearance.colors.colPrimary
                 colText: Appearance.colors.colOnPrimary
-                Accessible.name: !root.player ? Translation.tr("Open Spun")
-                    : root.player.isPlaying ? Translation.tr("Pause") : Translation.tr("Play")
-                onClicked: root.player ? root.player.togglePlaying() : Spun.open()
+                Accessible.name: root.player?.isPlaying ? Translation.tr("Pause") : Translation.tr("Play")
+                onClicked: MprisController.togglePlaying()
             }
             IconToolbarButton {
                 objectName: "spunNext"
@@ -266,10 +265,10 @@ AbstractBackgroundWidget {
                 objectName: "spunVolume"
                 Layout.fillWidth: true
                 configuration: StyledSlider.Configuration.XS
-                enabled: root.player?.volumeSupported ?? false
+                enabled: MprisController.canChangeVolume
                 value: root.player?.volume ?? 0
-                Accessible.name: Translation.tr("Spun volume")
-                onMoved: if (root.player?.volumeSupported) root.player.volume = value
+                Accessible.name: Translation.tr("Player volume")
+                onMoved: if (MprisController.canChangeVolume) root.player.volume = value
             }
         }
     }

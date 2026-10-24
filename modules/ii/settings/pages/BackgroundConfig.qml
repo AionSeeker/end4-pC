@@ -1577,8 +1577,9 @@ ContentPage {
                     }
                     RippleButtonWithIcon {
                         Layout.fillWidth: true
-                        mainText: Translation.tr("Open Spun")
+                        mainText: Translation.tr("Open music player")
                         materialIcon: "open_in_new"
+                        enabled: Spun.player?.canRaise ?? false
                         onClicked: Spun.open()
                     }
                 }
