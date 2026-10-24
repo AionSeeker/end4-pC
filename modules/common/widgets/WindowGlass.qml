@@ -17,6 +17,11 @@ Item {
     property bool glassEnabled: true
     property bool fullscreenSurface: false
     property real tintStrength: 0.3
+    property real flareLeft: 0
+    property real flareRight: 0
+    property real hangLeft: 0
+    property real hangRight: 0
+    property int edge: 0
     readonly property bool live: glassEnabled && (Config.options?.background?.widgets?.glass?.enable ?? false)
     readonly property bool tracking: live && (win?.visible ?? true)
 
@@ -201,6 +206,11 @@ Item {
                 bottomLeftRadius: root.bottomLeftRadius
                 tint: root.tint
                 tintOpacity: root.tintStrength
+                flareLeft: root.flareLeft
+                flareRight: root.flareRight
+                hangLeft: root.hangLeft
+                hangRight: root.hangRight
+                edge: root.edge
                 trackX: wallpaperImage.x
                 trackY: wallpaperImage.y
             }
