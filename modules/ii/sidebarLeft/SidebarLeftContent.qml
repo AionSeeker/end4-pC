@@ -4,7 +4,7 @@ import qs.modules.common.widgets
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import Qt5Compat.GraphicalEffects
+import Quickshell.Widgets
 
 Item {
     id: root
@@ -136,7 +136,7 @@ Item {
             }
         }
 
-        Rectangle {
+        ClippingRectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
             radius: Appearance.rounding.normal
@@ -145,15 +145,6 @@ Item {
             Item { // Content pages
                 id: pageStack
                 anchors.fill: parent
-                clip: true
-                layer.enabled: true
-                layer.effect: OpacityMask {
-                    maskSource: Rectangle {
-                        width: pageStack.width
-                        height: pageStack.height
-                        radius: Appearance.rounding.normal
-                    }
-                }
 
                 component PageSlot: SidebarPop {
                     id: slot
@@ -161,6 +152,7 @@ Item {
                     property bool enabledPage: true
                     property Component page: null
                     property bool lingering: false
+                    property bool visited: false
                     readonly property bool current: root.currentKey === pageKey
                     readonly property bool isHome: pageKey === "home"
                     readonly property alias item: loader.item
@@ -168,13 +160,17 @@ Item {
                     anchors.fill: parent
                     active: current
                     visible: current || lingering
-                    minScale: isHome ? 1 : 0.9
+                    minScale: isHome ? 1 : 0.97
                     travelX: 0
-                    travelY: isHome ? 0 : 36
+                    travelY: isHome ? 0 : 20
                     fade: !isHome
-                    animIndex: isHome ? 0 : 5
+                    animIndex: 0
+                    smooth: !isHome
+
+                    Component.onCompleted: if (current) visited = true
 
                     onCurrentChanged: {
+                        if (current) visited = true
                         if (!current) {
                             lingering = true
                             lingerTimer.restart()
@@ -190,7 +186,8 @@ Item {
                     Loader {
                         id: loader
                         anchors.fill: parent
-                        active: slot.enabledPage
+                        asynchronous: !slot.isHome
+                        active: slot.enabledPage && (slot.isHome || slot.visited)
                         sourceComponent: slot.page
                         onLoaded: if (slot.isHome) item.active = Qt.binding(() => slot.current)
                     }
