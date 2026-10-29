@@ -11,9 +11,9 @@ Item {
     property real bottomLeftRadius: cardRadius
     property color tint: "white"
     property real tintOpacity: 0
-    readonly property real rimWidth: 12
-    readonly property real pull: 14
-    readonly property real split: 0.08
+    readonly property real rimWidth: 16
+    readonly property real pull: 26
+    readonly property real split: 0.06
     readonly property real haze: 3
     readonly property real vividness: 1.3
     readonly property real sheen: 0.55
@@ -59,6 +59,6 @@ Item {
         property real edge: root.edge
         property color wash: Qt.rgba(root.tint.r, root.tint.g, root.tint.b, root.tintOpacity)
 
-        fragmentShader: Qt.resolvedUrl("shaders/frostedEdge.frag.qsb")
+        fragmentShader: Qt.resolvedUrl("shaders/liquidLens.frag.qsb")
     }
 }
