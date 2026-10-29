@@ -11,6 +11,10 @@ Item {
     property real bottomLeftRadius: cardRadius
     property color tint: "white"
     property real tintOpacity: 0
+    readonly property string tintChoice: Config.options.background.widgets.glass.tint ?? "transparent"
+    readonly property bool tintOverride: tintChoice !== "transparent"
+    readonly property color washColor: tintOverride ? Appearance.getColorFromName(tintChoice) : tint
+    readonly property real washOpacity: tintOverride ? 0.3 : tintOpacity
     readonly property real rimWidth: 16
     readonly property real pull: 26
     readonly property real split: 0.06
@@ -57,7 +61,7 @@ Item {
         property vector2d flares: Qt.vector2d(root.flareLeft, root.flareRight)
         property vector2d hangs: Qt.vector2d(root.hangLeft, root.hangRight)
         property real edge: root.edge
-        property color wash: Qt.rgba(root.tint.r, root.tint.g, root.tint.b, root.tintOpacity)
+        property color wash: Qt.rgba(root.washColor.r, root.washColor.g, root.washColor.b, root.washOpacity)
 
         fragmentShader: Qt.resolvedUrl("shaders/liquidLens.frag.qsb")
     }
