@@ -18,6 +18,7 @@ Singleton {
         Edit,
         Search,
         CharRecognition,
+        QrCode,
         Record,
         RecordWithSound
     }
@@ -67,6 +68,10 @@ Singleton {
                 break;
             case ScreenshotAction.Action.CharRecognition:
                 return ["bash", "-c", `${cropInPlace} && tesseract '${StringUtils.shellSingleQuoteEscape(screenshotPath)}' stdout -l $(tesseract --list-langs | awk 'NR>1{print $1}' | tr '\\n' '+' | sed 's/\\+$/\\n/') | wl-copy && ${cleanup}`]
+                break;
+            case ScreenshotAction.Action.QrCode:
+                // NOTE: zbarimg exits 4 with empty output when nothing decodes, so test the text
+                return ["bash", "-c", `${cropInPlace} && { if ! command -v zbarimg >/dev/null; then notify-send -a "Screen Snip" "QR scan unavailable" "Install the zbar package"; else qrText=$(zbarimg --quiet --raw '${StringUtils.shellSingleQuoteEscape(screenshotPath)}' 2>/dev/null); if [ -n "$qrText" ]; then printf '%s' "$qrText" | wl-copy && notify-send -a "Screen Snip" "QR code copied" "$qrText"; else notify-send -a "Screen Snip" "No QR code found" "Try a larger or sharper selection"; fi; fi; }; ${cleanup}`]
                 break;
             case ScreenshotAction.Action.Record:
                 return ["bash", "-c", `${Directories.recordScriptPath} --region '${slurpRegion}'${audioFlags}`]
