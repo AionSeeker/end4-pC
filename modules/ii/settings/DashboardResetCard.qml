@@ -13,33 +13,33 @@ DashboardCard {
 
     tint: Appearance.colors.colLayer1
 
-    StyledText {
+    RowLayout {
         anchors {
             top: parent.top
             left: parent.left
             right: parent.right
             margins: 14
         }
-        text: root.title
-        font.pixelSize: Appearance.font.pixelSize.larger
-        font.weight: Font.DemiBold
-        color: Appearance.colors.colOnLayer1
-        elide: Text.ElideRight
-    }
+        spacing: 12
 
-    MaterialShapeWrappedMaterialSymbol {
-        anchors {
-            left: parent.left
-            verticalCenter: parent.verticalCenter
-            leftMargin: 14
+        MaterialShapeWrappedMaterialSymbol {
+            shape: MaterialShape.Shape.Cookie6Sided
+            text: root.icon
+            iconSize: 24
+            fill: 1
+            padding: 10
+            color: Appearance.colors.colSecondary
+            colSymbol: Appearance.colors.colOnSecondary
         }
-        shape: MaterialShape.Shape.Cookie6Sided
-        text: root.icon
-        iconSize: 24
-        fill: 1
-        padding: 10
-        color: Appearance.colors.colSecondary
-        colSymbol: Appearance.colors.colOnSecondary
+
+        StyledText {
+            Layout.fillWidth: true
+            text: root.title
+            font.pixelSize: Appearance.font.pixelSize.larger
+            font.weight: Font.DemiBold
+            color: Appearance.colors.colOnLayer1
+            elide: Text.ElideRight
+        }
     }
 
     RippleButton {

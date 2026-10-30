@@ -341,6 +341,7 @@ QtObject {
         },
         {
             page: Translation.tr("Interface"), title: Translation.tr("Glass"), icon: "water_drop", when: "glass", cards: [
+                { type: "select", w: 4, key: "interface:Glass tint", title: Translation.tr("Glass tint"), icon: "colorize", kw: "glass glassy tint color transparent primary black" },
                 { type: "slider", key: "interface:Glass tint strength", title: Translation.tr("Tint strength (%)"), icon: "colorize", percent: false },
                 { type: "slider", key: "interface:Glass bezel", title: Translation.tr("Edge width (px)"), icon: "crop_free", percent: false },
                 { type: "slider", key: "interface:Glass refraction", title: Translation.tr("Refraction"), icon: "lens_blur", percent: false },
