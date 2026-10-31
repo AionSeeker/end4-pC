@@ -223,7 +223,7 @@ QtObject {
 
     readonly property var sections: [
         {
-            page: Translation.tr("Bar"), title: Translation.tr("AI Usage"), icon: "neurology", cards: [
+            page: Translation.tr("Bar"), title: Translation.tr("AI Usage"), icon: "neurology", requires: "aiUsage", cards: [
                 { type: "toggle", key: "bar:Claude Code", title: Translation.tr("Claude Code"), icon: "terminal", kw: "ai usage provider anthropic enable disable" },
                 { type: "toggle", key: "bar:Codex", title: Translation.tr("Codex"), icon: "code", kw: "ai usage provider openai enable disable" }
             ]
